@@ -7,9 +7,13 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.brownx.a2d0.calendar.presenter.CalendarScreen
 import com.brownx.a2d0.profile.presenter.ProfileScreen
 import com.brownx.a2d0.settings.presenter.SettingsScreen
@@ -45,17 +49,10 @@ fun CoreScreen(
         }
     ) { paddingValues ->
         Column {
-            NavHost(
-                navController = navController,
-                startDestination = Screen.List.route,
-            ) {
-                composable(Screen.Calendar.route) { CalendarScreen(paddingValues = paddingValues) }
-                composable(Screen.Groups.route) { GroupsScreen(paddingValues = paddingValues) }
-                composable(Screen.List.route) { TodoScreen(paddingValues = paddingValues) }
-                composable(Screen.Profile.route) { ProfileScreen(paddingValues = paddingValues) }
-                composable(Screen.Settings.route) { SettingsScreen(paddingValues = paddingValues) }
-                composable(Screen.CreateTask.route) { CreateTaskScreen(paddingValues = paddingValues) }
-            }
+            CoreNav(
+                paddingValues = paddingValues,
+                navController = navController
+            )
         }
     }
 }
