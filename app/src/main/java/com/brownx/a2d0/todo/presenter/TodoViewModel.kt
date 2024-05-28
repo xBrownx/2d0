@@ -3,8 +3,8 @@ package com.brownx.a2d0.todo.presenter
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.brownx.a2d0.todo.data.local.Task
-import com.brownx.a2d0.todo.domain.repository.TodoRepository
+import com.brownx.a2d0.core.data.local.task.Task
+import com.brownx.a2d0.core.domain.repository.CoreRepository
 import com.brownx.a2d0.todo.util.SortType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,14 +18,14 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class TodoViewModel @Inject constructor (
-    private val todoRepository: TodoRepository
+    private val coreRepository: CoreRepository
 ) : ViewModel() {
 
     private val _todoState = MutableStateFlow(TodoState())
     val todoState = _todoState.asStateFlow()
 
-    private val tasksSortedByDate = todoRepository.getAssignedTaskSortedByDueDate()
-    private val tasksSortedByGroup = todoRepository.getTasksSortedByGroup("")
+    private val tasksSortedByDate = coreRepository.getAssignedTaskSortedByDueDate()
+    private val tasksSortedByGroup = coreRepository.getTasksSortedByGroup("")
     private val tasks = MediatorLiveData<List<Task>>()
     private var sortType = SortType.DUE_DATE
 
@@ -50,7 +50,7 @@ class TodoViewModel @Inject constructor (
     }
 
     fun insertTask(task: Task) = viewModelScope.launch {
-        todoRepository.insertTask(task)
+        coreRepository.insertTask(task)
     }
 
 }

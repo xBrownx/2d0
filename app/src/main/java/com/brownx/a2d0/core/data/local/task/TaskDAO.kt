@@ -1,4 +1,4 @@
-package com.brownx.a2d0.todo.data.local
+package com.brownx.a2d0.core.data.local.task
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

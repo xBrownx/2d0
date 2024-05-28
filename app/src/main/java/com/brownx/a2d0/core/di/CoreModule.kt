@@ -1,10 +1,11 @@
-package com.brownx.a2d0.todo.di
+package com.brownx.a2d0.core.di
 
+import androidx.room.Room
 import android.app.Application
 import android.content.Context
-import androidx.room.Room
-import com.brownx.a2d0.todo.data.local.TaskDatabase
-import com.brownx.a2d0.util.Const.TASK_DATABASE_NAME
+import com.brownx.a2d0.core.data.local.group.GroupDatabase
+import com.brownx.a2d0.core.data.local.task.TaskDatabase
+import com.brownx.a2d0.util.Const
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,8 +20,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object TodoModule {
-
+object CoreModule {
     @Singleton
     @Provides
     fun provideTaskDatabase(
@@ -28,12 +28,26 @@ object TodoModule {
     ) = Room.databaseBuilder(
         app,
         TaskDatabase::class.java,
-        TASK_DATABASE_NAME
+        Const.TASK_DATABASE_NAME
     ).build()
 
     @Singleton
     @Provides
-    fun provideRunDao(db: TaskDatabase) = db.getTaskDao()
+    fun provideGroupDatabase(
+        @ApplicationContext app: Context
+    ) = Room.databaseBuilder(
+        app,
+        GroupDatabase::class.java,
+        Const.GROUP_DATABASE_NAME
+    ).build()
+
+    @Singleton
+    @Provides
+    fun provideTaskDao(db: TaskDatabase) = db.getTaskDao()
+
+    @Singleton
+    @Provides
+    fun provideGroupDao(db: GroupDatabase) = db.getGroupDao()
 
     @Singleton
     @Provides

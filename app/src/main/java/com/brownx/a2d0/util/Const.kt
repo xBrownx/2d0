@@ -8,4 +8,5 @@ package com.brownx.a2d0.util
 object Const {
 
     const val TASK_DATABASE_NAME = "task_db"
+    const val GROUP_DATABASE_NAME = "group_db"
 }

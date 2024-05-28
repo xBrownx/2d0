@@ -1,4 +1,4 @@
-package com.brownx.a2d0.todo.data.local
+package com.brownx.a2d0.core.data.local.task
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -8,7 +8,6 @@ import androidx.room.RoomDatabase
  * created on 26/05/2024
  */
 @Database(entities = [Task::class], version = 1)
-
 abstract class TaskDatabase : RoomDatabase() {
     abstract fun getTaskDao(): TaskDAO
 }
