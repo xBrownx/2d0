@@ -1,12 +1,14 @@
 package com.brownx.a2d0.createGroup.presenter
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.brownx.a2d0.core.data.local.group.Group
 import com.brownx.a2d0.core.domain.repository.GroupRepository
-import com.brownx.a2d0.core.domain.repository.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -22,7 +24,7 @@ class CreateGroupViewModel @Inject constructor(
     private val _createGroupState = MutableStateFlow(CreateGroupState())
     val createGroupState = _createGroupState.asStateFlow()
 
-    fun onUiEvent(uiEvent: CreateGroupUiEvent) {
+    fun onEvent(uiEvent: CreateGroupUiEvent) {
         when(uiEvent) {
             is CreateGroupUiEvent.OnEditGroupName -> {
                 _createGroupState.update {
@@ -31,15 +33,13 @@ class CreateGroupViewModel @Inject constructor(
                     )
                 }
             }
-
             is CreateGroupUiEvent.OnCreateGroup -> {
-                insertGroupIntoLocalDb()
+                //insertGroup(Group())
             }
-            else -> {}
         }
     }
 
-    private fun insertGroupIntoLocalDb() {
-
+    private fun insertGroup(group: Group) = viewModelScope.launch {
+        groupRepository.insertGroup(group)
     }
 }

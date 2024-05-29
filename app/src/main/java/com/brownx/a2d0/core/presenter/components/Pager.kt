@@ -7,14 +7,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import com.brownx.a2d0.calendar.presenter.CalendarScreen
-import com.brownx.a2d0.groups.presenter.GroupsScreen
+import com.brownx.a2d0.groups.presenter.groups.GroupsScreen
 import com.brownx.a2d0.profile.presenter.ProfileScreen
 import com.brownx.a2d0.settings.presenter.SettingsScreen
 import com.brownx.a2d0.todo.presenter.TodoScreen
-import kotlinx.coroutines.CoroutineScope
 
 /**
  * @author Andrew Brown

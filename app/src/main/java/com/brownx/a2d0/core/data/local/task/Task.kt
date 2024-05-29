@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "task_table")
 data class Task(
-    var taskGroupId: String = "",
+    var groupId: String = "",
     var createdTimeStamp: Long = 0L,
     var taskName: String = "",
     var taskDescription: String = "",
@@ -20,5 +20,5 @@ data class Task(
     var assignedTo: String = "",
 ) {
     @PrimaryKey(autoGenerate = true)
-    var id: Int? = null
+    var taskId: Int? = null
 }

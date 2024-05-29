@@ -23,7 +23,7 @@ fun CreateGroupScreen(
         value = createGroupState.groupName,
         label = "Group Name")
     {
-        createGroupViewModel.onUiEvent(
+        createGroupViewModel.onEvent(
             CreateGroupUiEvent.OnEditGroupName(it)
         )
     }

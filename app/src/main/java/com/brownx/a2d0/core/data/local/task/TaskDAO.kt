@@ -23,6 +23,7 @@ interface TaskDAO {
     @Query("SELECT * FROM task_table ORDER BY dueDate DESC")
     fun getAssignedTaskSortedByDueDate(): LiveData<List<Task>>
 
-    @Query("SELECT * FROM task_table WHERE taskGroupId = :groupId ORDER BY dueDate DESC")
+    @Query("SELECT * FROM task_table WHERE groupId = :groupId ORDER BY dueDate DESC")
     fun getTaskSortedByGroup(groupId: String): LiveData<List<Task>>
+
 }

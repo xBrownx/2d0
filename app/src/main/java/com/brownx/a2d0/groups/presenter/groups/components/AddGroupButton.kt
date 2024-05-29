@@ -1,4 +1,4 @@
-package com.brownx.a2d0.groups.presenter.components
+package com.brownx.a2d0.groups.presenter.groups.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

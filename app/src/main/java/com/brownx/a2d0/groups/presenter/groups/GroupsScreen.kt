@@ -1,4 +1,4 @@
-package com.brownx.a2d0.groups.presenter
+package com.brownx.a2d0.groups.presenter.groups
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -8,8 +8,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.brownx.a2d0.groups.presenter.components.AddGroupButton
-import com.brownx.a2d0.groups.presenter.components.GroupListButton
+import com.brownx.a2d0.groups.presenter.groups.components.AddGroupButton
+import com.brownx.a2d0.groups.presenter.groups.components.GroupListButton
 import com.brownx.a2d0.ui.components.TopTitle
 import com.brownx.a2d0.ui.theme.softGrey
 

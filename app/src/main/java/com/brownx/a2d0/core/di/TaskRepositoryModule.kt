@@ -7,16 +7,18 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+
 /**
  * @author Andrew Brown
- * created on 26/05/2024
+ * created on 29/05/2024
  */
+
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class CoreRepositoryModule {
+abstract class TaskRepositoryModule {
     @Binds
     @Singleton
-    abstract fun bindCoreRepository(
+    abstract fun bindTaskRepository(
         taskRepositoryImpl: TaskRepositoryImpl
     ) : TaskRepository
 }

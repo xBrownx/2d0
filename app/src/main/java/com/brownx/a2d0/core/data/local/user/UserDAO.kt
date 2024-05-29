@@ -1,23 +1,21 @@
-package com.brownx.a2d0.core.data.local.group
+package com.brownx.a2d0.core.data.local.user
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import androidx.room.Query
-
 
 /**
  * @author Andrew Brown
- * created on 26/05/2024
+ * created on 29/05/2024
  */
 
 @Dao
-interface GroupDAO {
+interface UserDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGroup(group: Group)
+    suspend fun insertUser(user: User)
 
     @Delete
-    suspend fun deleteGroup(group: Group)
+    suspend fun deleteUser(user: User)
 }

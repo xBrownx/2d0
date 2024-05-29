@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import com.brownx.a2d0.core.data.local.group.GroupDatabase
 import com.brownx.a2d0.core.data.local.task.TaskDatabase
+import com.brownx.a2d0.core.data.local.user.UserDatabase
 import com.brownx.a2d0.util.Const
 import dagger.Module
 import dagger.Provides
@@ -21,6 +22,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object CoreModule {
+
     @Singleton
     @Provides
     fun provideTaskDatabase(
@@ -43,11 +45,25 @@ object CoreModule {
 
     @Singleton
     @Provides
+    fun provideUserDatabase(
+        @ApplicationContext app: Context
+    ) = Room.databaseBuilder(
+        app,
+        UserDatabase::class.java,
+        Const.USER_DATABASE_NAME
+    ).build()
+
+    @Singleton
+    @Provides
     fun provideTaskDao(db: TaskDatabase) = db.getTaskDao()
 
     @Singleton
     @Provides
     fun provideGroupDao(db: GroupDatabase) = db.getGroupDao()
+
+    @Singleton
+    @Provides
+    fun provideUserDao(db: UserDatabase) = db.getUserDao()
 
     @Singleton
     @Provides
