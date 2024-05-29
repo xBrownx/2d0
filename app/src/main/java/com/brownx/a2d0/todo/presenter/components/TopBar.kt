@@ -22,10 +22,7 @@ import com.brownx.a2d0.ui.theme.softOrange
 @Composable
 fun ListTopBar() {
     var tabIndex by remember { mutableIntStateOf(0) }
-    val tabs = listOf(
-        "2DAY",
-        "UPCOMING",
-    )
+    val tabs = listOf("2DAY", "UPCOMING",)
 
     Column(modifier = Modifier.fillMaxWidth()) {
         TabRow(
@@ -35,14 +32,12 @@ fun ListTopBar() {
         ) {
             tabs.forEachIndexed { index, title ->
                 Tab(text = {
-
                         TextWithShadow(
                             modifier = Modifier,
                             text = title,
                             xOffset = -1.5f,
                             yOffset = 1.5f
                         )
-
                 },
                     selected = tabIndex == index,
                     onClick = { tabIndex = index }

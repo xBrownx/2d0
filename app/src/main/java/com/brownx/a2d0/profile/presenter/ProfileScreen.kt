@@ -4,9 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.brownx.a2d0.ui.components.TopTitle
+import com.brownx.a2d0.ui.theme.softGrey
 
 /**
  * @author Andrew Brown
@@ -14,14 +18,20 @@ import androidx.compose.ui.graphics.Color
  */
 
 @Composable
-fun ProfileScreen(
-    paddingValues: PaddingValues
-) {
-    Column(
-        modifier = Modifier
-            .background(Color.White)
-            .fillMaxSize()
-    ) {
+fun ProfileScreen() {
+    Scaffold(
+        modifier = Modifier,
+        topBar = {
+            TopTitle(title = "PROFILE")
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+                .background(softGrey)
+        ) {
 
+        }
     }
 }

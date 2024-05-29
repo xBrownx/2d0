@@ -24,15 +24,12 @@ import com.brownx.a2d0.ui.theme.softPink
  */
 
 @Composable
-fun TodoScreen(
-    paddingValues: PaddingValues
-) {
+fun TodoScreen() {
     val todoViewModel = hiltViewModel<TodoViewModel>()
     val todoState by todoViewModel.todoState.collectAsState()
 
     Scaffold(
-        modifier = Modifier
-            .padding(paddingValues),
+        modifier = Modifier,
         topBar = {
             ListTopBar()
         }

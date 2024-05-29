@@ -4,9 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.brownx.a2d0.ui.components.TopTitle
+import com.brownx.a2d0.ui.theme.softGrey
 
 /**
  * @author Andrew Brown
@@ -14,14 +18,20 @@ import androidx.compose.ui.graphics.Color
  */
 
 @Composable
-fun SettingsScreen(
-    paddingValues: PaddingValues
-) {
-    Column(
-        modifier = Modifier
-            .background(Color.Green)
-            .fillMaxSize()
-    ) {
+fun SettingsScreen() {
+    Scaffold(
+        modifier = Modifier,
+        topBar = {
+            TopTitle(title = "SETTINGS")
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+                .background(softGrey)
+        ) {
 
+        }
     }
 }
