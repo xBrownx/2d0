@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.brownx.a2d0.ui.components.CustomTextField
 import com.brownx.a2d0.ui.components.TopTitle
 import com.brownx.a2d0.ui.theme.softGrey
 
@@ -23,9 +24,7 @@ import com.brownx.a2d0.ui.theme.softGrey
  */
 
 @Composable
-fun CreateTaskScreen(
-    paddingValues: PaddingValues
-) {
+fun CreateTaskScreen() {
     val createTaskViewModel = hiltViewModel<CreateTaskViewModel>()
     val createTaskState by createTaskViewModel.createTaskState.collectAsState()
 
@@ -60,20 +59,3 @@ fun CreateTaskScreen(
     }
 }
 
-@Composable
-fun CustomTextField(
-    value: String,
-    label: String,
-    onValueChange: (String) -> Unit
-) {
-    TextField(
-        modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .fillMaxWidth(),
-        value = value,
-        onValueChange = onValueChange,
-        label = {
-            Text(label)
-        }
-    )
-}

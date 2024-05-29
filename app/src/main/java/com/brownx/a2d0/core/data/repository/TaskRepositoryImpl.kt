@@ -2,16 +2,16 @@ package com.brownx.a2d0.core.data.repository
 
 import com.brownx.a2d0.core.data.local.task.Task
 import com.brownx.a2d0.core.data.local.task.TaskDAO
-import com.brownx.a2d0.core.domain.repository.CoreRepository
+import com.brownx.a2d0.core.domain.repository.TaskRepository
 import javax.inject.Inject
 
 /**
  * @author Andrew Brown
  * created on 26/05/2024
  */
-class CoreRepositoryImpl @Inject constructor(
+class TaskRepositoryImpl @Inject constructor(
     private val taskDao: TaskDAO,
-) : CoreRepository {
+) : TaskRepository {
 
     override suspend fun insertTask(task: Task) = taskDao.insertTask(task)
 

@@ -7,7 +7,7 @@ import com.brownx.a2d0.core.data.local.task.Task
  * @author Andrew Brown
  * created on 26/05/2024
  */
-interface CoreRepository {
+interface TaskRepository {
 
     suspend fun insertTask(task: Task)
 

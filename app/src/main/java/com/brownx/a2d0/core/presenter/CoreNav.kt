@@ -27,6 +27,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.brownx.a2d0.calendar.presenter.CalendarScreen
 import com.brownx.a2d0.core.presenter.components.CorePager
+import com.brownx.a2d0.createGroup.presenter.CreateGroupScreen
 import com.brownx.a2d0.createTask.presenter.CreateTaskScreen
 import com.brownx.a2d0.groups.presenter.GroupsScreen
 import com.brownx.a2d0.profile.presenter.ProfileScreen
@@ -57,12 +58,12 @@ fun CoreNav(
                     towards = AnimatedContentTransitionScope.SlideDirection.Down
                 )
             },
-//            exitTransition = {
-//                slideOutOfContainer(
-//                    animationSpec = tween(durationMillis = 300),
-//                    towards = AnimatedContentTransitionScope.SlideDirection.Up
-//                )
-//            }
+            exitTransition = {
+                slideOutOfContainer(
+                    animationSpec = tween(durationMillis = 300),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Up
+                )
+            }
         ) {
             CorePager(
                 paddingValues = paddingValues,
@@ -85,57 +86,25 @@ fun CoreNav(
                 )
             }
         ) {
-            CreateTaskScreen(paddingValues = paddingValues)
+            CreateTaskScreen()
         }
-//
-//        composable(
-//            route = "${Screen.List.route}/{transitionFrom}",
-//            arguments = listOf(navArgument("transitionFrom") { type = NavType.StringType }),
-//            enterTransition =
-//            {
-//                val transitionFrom = this.targetState.arguments?.getString("transitionFrom")
-//                val slideDirection = when (transitionFrom) {
-//                    Screen.Calendar.route -> AnimatedContentTransitionScope.SlideDirection.Start
-//                    Screen.Groups.route -> AnimatedContentTransitionScope.SlideDirection.Start
-//                    else -> AnimatedContentTransitionScope.SlideDirection.End
-//                }
-//                slideIntoContainer(
-//                    animationSpec = tween(durationMillis = 300, easing = EaseIn),
-//                    towards = slideDirection
-//                )
-//            },
-//            exitTransition = {
-//                val slideDirection = when (this.targetState.id) {
-//                    Screen.Calendar.route -> AnimatedContentTransitionScope.SlideDirection.End
-//                    Screen.Groups.route -> AnimatedContentTransitionScope.SlideDirection.End
-//                    else -> AnimatedContentTransitionScope.SlideDirection.Start // default
-//                }
-//                slideOutOfContainer(
-//                    animationSpec = tween(durationMillis = 300, easing = EaseOut),
-//                    towards = slideDirection
-//                )
-//            }
-//
-//        ) {
-//            TodoScreen(paddingValues = paddingValues)
-//        }
-//
-//        composable(
-//            route = "${Screen.Profile.route}/{transitionFrom}",
-//        ) {
-//            ProfileScreen(paddingValues = paddingValues)
-//        }
-//
-//        composable(
-//            route = "${Screen.Settings.route}/{transitionFrom}",
-//        ) {
-//            SettingsScreen(paddingValues = paddingValues)
-//        }
-//
-//        composable(
-//            route = "${Screen.CreateTask.route}/{transitionFrom}",
-//        ) {
-//            CreateTaskScreen(paddingValues = paddingValues)
-//        }
+
+        composable(
+            route = Screen.CreateGroup.route,
+            enterTransition = {
+                slideIntoContainer(
+                    animationSpec = tween(durationMillis = 300),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Up
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    animationSpec = tween(durationMillis = 300),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Down
+                )
+            }
+        ) {
+            CreateGroupScreen()
+        }
     }
 }
