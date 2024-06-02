@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import com.brownx.a2d0.auth.presenter.AuthScreen
 import com.brownx.a2d0.core.presenter.components.CorePager
 import com.brownx.a2d0.createGroup.presenter.CreateGroupScreen
@@ -33,6 +34,85 @@ fun CoreNav(
         startDestination = Screen.Auth.route,
     ) {
 
+        navigation(
+            startDestination = Screen.CoreScreen.route,
+            route = "Authenticated"
+        ) {
+            composable(
+                route = Screen.CoreScreen.route,
+                enterTransition = {
+                    slideIntoContainer(
+                        animationSpec = tween(durationMillis = 300),
+                        towards = AnimatedContentTransitionScope.SlideDirection.Down
+                    )
+                },
+                exitTransition = {
+                    slideOutOfContainer(
+                        animationSpec = tween(durationMillis = 300),
+                        towards = AnimatedContentTransitionScope.SlideDirection.Up
+                    )
+                }
+            ) {
+                CorePager(
+                    paddingValues = paddingValues,
+                    pagerState = pagerState,
+                    navController = navController
+                )
+            }
+            composable(
+                route = Screen.CreateTask.route,
+                enterTransition = {
+                    slideIntoContainer(
+                        animationSpec = tween(durationMillis = 300),
+                        towards = AnimatedContentTransitionScope.SlideDirection.Up
+                    )
+                },
+                exitTransition = {
+                    slideOutOfContainer(
+                        animationSpec = tween(durationMillis = 300),
+                        towards = AnimatedContentTransitionScope.SlideDirection.Down
+                    )
+                }
+            ) {
+                CreateTaskScreen()
+            }
+
+            composable(
+                route = Screen.Group.route,
+                enterTransition = {
+                    slideIntoContainer(
+                        animationSpec = tween(durationMillis = 300),
+                        towards = AnimatedContentTransitionScope.SlideDirection.Up
+                    )
+                },
+                exitTransition = {
+                    slideOutOfContainer(
+                        animationSpec = tween(durationMillis = 300),
+                        towards = AnimatedContentTransitionScope.SlideDirection.Down
+                    )
+                }
+            ) {
+                GroupScreen(navController = navController)
+            }
+            composable(
+                route = Screen.CreateGroup.route,
+                enterTransition = {
+                    slideIntoContainer(
+                        animationSpec = tween(durationMillis = 300),
+                        towards = AnimatedContentTransitionScope.SlideDirection.Up
+                    )
+                },
+                exitTransition = {
+                    slideOutOfContainer(
+                        animationSpec = tween(durationMillis = 300),
+                        towards = AnimatedContentTransitionScope.SlideDirection.Down
+                    )
+                }
+            ) {
+                CreateGroupScreen()
+            }
+        }
+
         composable(
             route = Screen.Auth.route,
             enterTransition = {
@@ -51,82 +131,6 @@ fun CoreNav(
         ) {
             AuthScreen()
         }
-
-        composable(
-            route = Screen.CoreScreen.route,
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Down
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Up
-                )
-            }
-        ) {
-            CorePager(
-                paddingValues = paddingValues,
-                pagerState = pagerState,
-                navController = navController
-            )
-        }
-
-        composable(
-            route = Screen.CreateTask.route,
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Up
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Down
-                )
-            }
-        ) {
-            CreateTaskScreen()
-        }
-
-        composable(
-            route = Screen.Group.route,
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Up
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Down
-                )
-            }
-        ) {
-            GroupScreen(navController = navController)
-        }
-        composable(
-            route = Screen.CreateGroup.route,
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Up
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Down
-                )
-            }
-        ) {
-            CreateGroupScreen()
-        }
-
     }
 }
 

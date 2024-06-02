@@ -32,9 +32,9 @@ import com.brownx.a2d0.util.Screen
  * created on 23/05/2024
  */
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CoreScreen(
+fun MainScreen(
     navController: NavHostController
 ) {
     val screenState by navController.currentBackStackEntryAsState()
