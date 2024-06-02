@@ -5,8 +5,11 @@ package com.brownx.a2d0.util
  * created on 17/05/2024
  */
 sealed class Screen(val route: String) {
+    data object Core: Screen("core")
+    data object Auth: Screen("auth")
     data object Calendar : Screen("calendar")
     data object Groups : Screen("groups")
+    data object Group : Screen("group")
     data object List : Screen("list")
     data object Profile : Screen("profile")
     data object Settings : Screen("settings")

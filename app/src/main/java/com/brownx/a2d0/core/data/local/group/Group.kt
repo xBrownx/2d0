@@ -16,7 +16,6 @@ data class Group(
     var groupName: String = "",
     var groupOwnerId: String = "",
     var createDate: String = "",
-    var groupMemberUserIds: UserList,
     var tasksInGroup: TaskList,
 
 ) {

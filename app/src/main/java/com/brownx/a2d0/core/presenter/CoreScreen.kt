@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.brownx.a2d0.core.presenter.components.BottomNavBar
 import com.brownx.a2d0.core.presenter.components.BottomNavEnum
+import com.brownx.a2d0.core.presenter.components.CoreNav
 import com.brownx.a2d0.ui.theme.green
 import com.brownx.a2d0.ui.theme.softGrey
 import com.brownx.a2d0.ui.theme.softYellow

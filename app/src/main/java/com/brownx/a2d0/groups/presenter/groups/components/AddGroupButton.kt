@@ -16,7 +16,9 @@ import androidx.compose.ui.unit.dp
  */
 
 @Composable
-fun AddGroupButton() {
+fun AddGroupButton(
+    onClick: () -> Unit
+) {
     Button(
         modifier = Modifier
             .padding(
@@ -24,7 +26,7 @@ fun AddGroupButton() {
                 vertical = 8.dp
             )
             .fillMaxWidth(),
-        onClick = { /*TODO*/ }
+        onClick = onClick
     ) {
         Icon(
             imageVector = Icons.Default.Add,

@@ -128,6 +128,11 @@ dependencies {
     // Gson
     implementation libs.gson
 
+    // retrofit
+    implementation libs.retrofit
+    implementation libs.converter.gson
+
+
 }
 
 kapt {

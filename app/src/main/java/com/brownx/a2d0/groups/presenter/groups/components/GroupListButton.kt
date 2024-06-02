@@ -1,6 +1,7 @@
 package com.brownx.a2d0.groups.presenter.groups.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,7 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,24 +30,22 @@ import com.brownx.a2d0.ui.theme.softYellow
 
 @Composable
 fun GroupListButton(
-   groupName: String
+    groupName: String,
+    onClick: () -> Unit
 ) {
-    Row(
+    Button(
         modifier = Modifier
-
             .padding(
                 start = 16.dp,
                 end = 16.dp,
                 top = 8.dp
             )
-            .fillMaxWidth()
-            .background(
-                color = softBlue,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = softBlue,
+        ),
+        onClick = onClick
     ) {
         Box(
             modifier = Modifier
@@ -58,7 +60,8 @@ fun GroupListButton(
             Column(
                 modifier = Modifier
                     .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
 
                 TextWithShadow(

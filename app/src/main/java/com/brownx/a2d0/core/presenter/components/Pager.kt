@@ -8,6 +8,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import com.brownx.a2d0.calendar.presenter.CalendarScreen
 import com.brownx.a2d0.groups.presenter.groups.GroupsScreen
 import com.brownx.a2d0.profile.presenter.ProfileScreen
@@ -22,7 +23,8 @@ import com.brownx.a2d0.todo.presenter.TodoScreen
 @Composable
 fun CorePager(
     paddingValues: PaddingValues,
-    pagerState: PagerState
+    pagerState: PagerState,
+    navController: NavHostController
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -39,7 +41,7 @@ fun CorePager(
 
             when (page) {
                 0 -> CalendarScreen()
-                1 -> GroupsScreen()
+                1 -> GroupsScreen(navController = navController)
                 2 -> TodoScreen()
                 3 -> ProfileScreen()
                 4 -> SettingsScreen()
