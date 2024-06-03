@@ -22,6 +22,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.brownx.a2d0.core.presenter.components.BottomNavBar
 import com.brownx.a2d0.core.presenter.components.BottomNavEnum
 import com.brownx.a2d0.core.presenter.components.CoreNav
+import com.brownx.a2d0.core.presenter.components.CorePager
 import com.brownx.a2d0.ui.theme.green
 import com.brownx.a2d0.ui.theme.softGrey
 import com.brownx.a2d0.ui.theme.softYellow
@@ -34,7 +35,7 @@ import com.brownx.a2d0.util.Screen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MainScreen(
+fun HomeScreen(
     navController: NavHostController
 ) {
     val screenState by navController.currentBackStackEntryAsState()
@@ -56,12 +57,12 @@ fun MainScreen(
             )
         },
         floatingActionButton = {
-            val isCreateTask = screenState?.destination?.route == Screen.CreateTask.route
+            val isCreateTask = screenState?.destination?.route == Screen.Home.CreateTask.route
             FloatingActionButton(
                 containerColor = if(isCreateTask) green else softYellow,
                 onClick = {
-                    if (isCreateTask) navController.navigate(Screen.CoreScreen.route)
-                    else navController.navigate(Screen.CreateTask.route)
+                    if (isCreateTask) navController.navigate(Screen.Home.List.route)
+                    else navController.navigate(Screen.Home.CreateTask.route)
                 }
             ) {
                 Icon(
@@ -76,7 +77,7 @@ fun MainScreen(
             modifier = Modifier
                 .background(softGrey)
         ) {
-            CoreNav(
+            CorePager(
                 paddingValues = paddingValues,
                 pagerState = pagerState,
                 navController = navController

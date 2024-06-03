@@ -20,7 +20,6 @@ import com.brownx.a2d0.util.Screen
  * created on 26/05/2024
  */
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GroupsScreen(
     navController: NavHostController
@@ -38,13 +37,11 @@ fun GroupsScreen(
                 .background(softGrey)
         ) {
             GroupListButton("PERSONAL") {
-                navController.navigate(Screen.Group.route)
+                navController.navigate(Screen.Home.Groups.Groups.route)
             }
-
             AddGroupButton {
-                navController.navigate(Screen.CreateGroup.route)
+                navController.navigate(Screen.Home.Groups.Group.route)
             }
         }
     }
 }
-

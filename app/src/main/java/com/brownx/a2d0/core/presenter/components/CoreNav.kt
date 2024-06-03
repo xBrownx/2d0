@@ -6,160 +6,179 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.compose.rememberNavController
 import com.brownx.a2d0.auth.presenter.AuthScreen
+import com.brownx.a2d0.auth.presenter.AuthViewModel
+import com.brownx.a2d0.auth.presenter.components.LoginScreen
+import com.brownx.a2d0.auth.presenter.components.RegisterScreen
+import com.brownx.a2d0.auth.util.AuthResult
+import com.brownx.a2d0.core.presenter.CoreUiEvents
+import com.brownx.a2d0.core.presenter.CoreViewModel
+import com.brownx.a2d0.core.presenter.HomeScreen
 import com.brownx.a2d0.core.presenter.components.CorePager
 import com.brownx.a2d0.createGroup.presenter.CreateGroupScreen
 import com.brownx.a2d0.createTask.presenter.CreateTaskScreen
 import com.brownx.a2d0.groups.presenter.group.GroupScreen
 import com.brownx.a2d0.groups.presenter.groups.GroupsScreen
 import com.brownx.a2d0.util.Screen
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 
 /**
  * @author Andrew Brown
  * created on 28/05/2024
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CoreNav(
-    paddingValues: PaddingValues,
-    pagerState: PagerState,
-    navController: NavHostController
-) {
+fun CoreNav() {
+    val mainNavController = rememberNavController()
+
+    val coreViewModel = hiltViewModel<CoreViewModel>()
+    val coreState by coreViewModel.coreState.collectAsState()
+
+    val authViewModel = hiltViewModel<AuthViewModel>()
+    val authState by authViewModel.authState.collectAsState()
+
     NavHost(
-        navController = navController,
+        navController = mainNavController,
         startDestination = Screen.Auth.route,
     ) {
-
         navigation(
-            startDestination = Screen.CoreScreen.route,
-            route = "Authenticated"
+            startDestination = Screen.Core.route,
+            route = Screen.Auth.route
         ) {
+
+            composable(route = Screen.Core.route) {
+                CoreScreen(
+                    coreViewModel.authResultChannel,
+                    onAuthorized = {
+                        coreViewModel.onEvent(
+                            CoreUiEvents.LoadAll
+                        )
+                        mainNavController.popBackStack()
+                        mainNavController.navigate(
+                            Screen.Core.route
+                        )
+                    },
+                    onNotAuthorized = {
+                        mainNavController.popBackStack()
+                        mainNavController.navigate(
+                            Screen.Auth.route
+                        )
+                    }
+                )
+            }
+
             composable(
-                route = Screen.CoreScreen.route,
+                route = Screen.Auth.Login.route,
                 enterTransition = {
                     slideIntoContainer(
                         animationSpec = tween(durationMillis = 300),
-                        towards = AnimatedContentTransitionScope.SlideDirection.Down
+                        towards = AnimatedContentTransitionScope.SlideDirection.Right
                     )
                 },
                 exitTransition = {
                     slideOutOfContainer(
                         animationSpec = tween(durationMillis = 300),
-                        towards = AnimatedContentTransitionScope.SlideDirection.Up
+                        towards = AnimatedContentTransitionScope.SlideDirection.Left
                     )
                 }
             ) {
-                CorePager(
-                    paddingValues = paddingValues,
-                    pagerState = pagerState,
-                    navController = navController
+                LoginScreen(
+                    authViewModel = authViewModel,
+                    authState = authState
                 )
             }
             composable(
-                route = Screen.CreateTask.route,
+                route = Screen.Auth.Register.route,
                 enterTransition = {
                     slideIntoContainer(
                         animationSpec = tween(durationMillis = 300),
-                        towards = AnimatedContentTransitionScope.SlideDirection.Up
+                        towards = AnimatedContentTransitionScope.SlideDirection.Left
                     )
                 },
                 exitTransition = {
                     slideOutOfContainer(
                         animationSpec = tween(durationMillis = 300),
-                        towards = AnimatedContentTransitionScope.SlideDirection.Down
+                        towards = AnimatedContentTransitionScope.SlideDirection.Right
                     )
                 }
             ) {
-                CreateTaskScreen()
-            }
-
-            composable(
-                route = Screen.Group.route,
-                enterTransition = {
-                    slideIntoContainer(
-                        animationSpec = tween(durationMillis = 300),
-                        towards = AnimatedContentTransitionScope.SlideDirection.Up
-                    )
-                },
-                exitTransition = {
-                    slideOutOfContainer(
-                        animationSpec = tween(durationMillis = 300),
-                        towards = AnimatedContentTransitionScope.SlideDirection.Down
-                    )
-                }
-            ) {
-                GroupScreen(navController = navController)
-            }
-            composable(
-                route = Screen.CreateGroup.route,
-                enterTransition = {
-                    slideIntoContainer(
-                        animationSpec = tween(durationMillis = 300),
-                        towards = AnimatedContentTransitionScope.SlideDirection.Up
-                    )
-                },
-                exitTransition = {
-                    slideOutOfContainer(
-                        animationSpec = tween(durationMillis = 300),
-                        towards = AnimatedContentTransitionScope.SlideDirection.Down
-                    )
-                }
-            ) {
-                CreateGroupScreen()
+                RegisterScreen(
+                    authViewModel = authViewModel,
+                    authState = authState
+                )
             }
         }
-
         composable(
-            route = Screen.Auth.route,
+            route = Screen.Home.route,
             enterTransition = {
                 slideIntoContainer(
                     animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Right
+                    towards = AnimatedContentTransitionScope.SlideDirection.Left
                 )
             },
             exitTransition = {
                 slideOutOfContainer(
                     animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Left
+                    towards = AnimatedContentTransitionScope.SlideDirection.Right
                 )
             }
-
         ) {
-            AuthScreen()
+            HomeScreen(
+                navController = mainNavController
+            )
+        }
+        navigation(
+            route = Screen.Home.Groups.route,
+            startDestination = Screen.Home.Groups.Groups.route
+        ) {
+            composable(
+                route = Screen.Home.Groups.Groups.route,
+            ) {
+                GroupsScreen(navController = mainNavController)
+            }
+            composable(
+                route = Screen.Home.Groups.Group.route,
+            ) {
+                GroupScreen(navController = mainNavController)
+            }
         }
     }
 }
 
 @Composable
-fun GroupNav(
-    navController: NavHostController
+fun CoreScreen(
+    authResultChannel: Flow<AuthResult<Unit>>,
+    onAuthorized: () -> Unit,
+    onNotAuthorized: () -> Unit
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = Screen.Groups.route,
-    ) {
-        composable(
-            route = Screen.Groups.route,
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Down
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Up
-                )
+    LaunchedEffect(true) {
+        authResultChannel.collectLatest { result ->
+            when (result) {
+                is AuthResult.Authorized -> {
+                    onAuthorized()
+                }
+
+                is AuthResult.SingedOut -> {
+                    onNotAuthorized()
+                }
+
+                is AuthResult.Unauthorized -> {
+                    onNotAuthorized()
+                }
+
+                is AuthResult.UnknownError -> {
+                    onNotAuthorized()
+                }
             }
-        ) {
-            GroupsScreen(navController = navController)
         }
-
     }
-
 }
