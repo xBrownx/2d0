@@ -1,7 +1,7 @@
 package com.brownx.a2d0.groups.presenter.groups
 
 import androidx.lifecycle.ViewModel
-import com.brownx.a2d0.main.domain.repository.GroupRepository
+import com.brownx.a2d0.groups.domain.repository.GroupRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

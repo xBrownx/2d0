@@ -3,8 +3,8 @@ package com.brownx.a2d0.todo.presenter
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.brownx.a2d0.main.data.local.task.TaskEntity
-import com.brownx.a2d0.main.domain.repository.TaskRepository
+import com.brownx.a2d0.tasks.data.local.TaskEntity
+import com.brownx.a2d0.tasks.data.repository.TaskRepository
 import com.brownx.a2d0.todo.util.SortType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

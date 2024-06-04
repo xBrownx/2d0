@@ -6,13 +6,12 @@ import com.brownx.a2d0.auth.domain.repository.AuthRepository
 import com.brownx.a2d0.auth.domain.usecase.CreatePersonalGroupUseCase
 import com.brownx.a2d0.auth.domain.usecase.FormValidatorUseCase
 import com.brownx.a2d0.auth.util.AuthResult
-import com.brownx.a2d0.main.data.mapper.toGroupEntity
-import com.brownx.a2d0.main.domain.repository.GroupRepository
+import com.brownx.a2d0.groups.data.mapper.toGroupEntity
+import com.brownx.a2d0.groups.domain.repository.GroupRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch

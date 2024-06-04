@@ -1,6 +1,6 @@
 package com.brownx.a2d0.groups.presenter.groups
 
-import com.brownx.a2d0.main.data.local.group.GroupEntity
+import com.brownx.a2d0.groups.data.local.GroupEntity
 
 /**
  * @author Andrew Brown

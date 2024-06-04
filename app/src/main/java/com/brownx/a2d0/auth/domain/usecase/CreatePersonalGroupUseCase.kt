@@ -1,7 +1,7 @@
 package com.brownx.a2d0.auth.domain.usecase
 
 import android.content.SharedPreferences
-import com.brownx.a2d0.main.domain.model.Group
+import com.brownx.a2d0.groups.domain.model.Group
 import com.brownx.a2d0.util.GenerateUuid
 import javax.inject.Inject
 

@@ -5,7 +5,6 @@ import com.brownx.a2d0.auth.data.remote.AuthApi
 import com.brownx.a2d0.auth.data.remote.dto.AuthRequest
 import com.brownx.a2d0.auth.domain.repository.AuthRepository
 import com.brownx.a2d0.auth.util.AuthResult
-import com.brownx.a2d0.main.domain.repository.GroupRepository
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
