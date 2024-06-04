@@ -6,6 +6,7 @@ package com.brownx.a2d0.auth.data.remote.dto
  */
 data class AuthRequest(
     val username: String = "",
+    val mobile: String = "",
     val password: String = "",
     val token: String = ""
 )

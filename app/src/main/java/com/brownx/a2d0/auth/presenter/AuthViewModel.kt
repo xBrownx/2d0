@@ -3,12 +3,16 @@ package com.brownx.a2d0.auth.presenter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brownx.a2d0.auth.domain.repository.AuthRepository
+import com.brownx.a2d0.auth.domain.usecase.CreatePersonalGroupUseCase
 import com.brownx.a2d0.auth.domain.usecase.FormValidatorUseCase
 import com.brownx.a2d0.auth.util.AuthResult
+import com.brownx.a2d0.main.data.mapper.toGroupEntity
+import com.brownx.a2d0.main.domain.repository.GroupRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -23,7 +27,9 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val formValidatorUseCase: FormValidatorUseCase
+    private val groupRepository: GroupRepository,
+    private val formValidatorUseCase: FormValidatorUseCase,
+    private val createPersonalGroupUseCase: CreatePersonalGroupUseCase
 ) : ViewModel() {
 
     private val _authState = MutableStateFlow(AuthState())
@@ -40,30 +46,51 @@ class AuthViewModel @Inject constructor(
 
             is AuthUiEvents.OnUsernameChanged -> {
                 _authState.update {
-                    it.copy(
-                        username = uiEvent.username
-                    )
+                    it.copy(username = uiEvent.username)
                 }
             }
-
+            is AuthUiEvents.OnMobileChanged -> {
+                _authState.update {
+                    it.copy(mobile = uiEvent.mobile)
+                }
+            }
             is AuthUiEvents.OnPasswordChanged -> {
                 _authState.update {
                     it.copy(password = uiEvent.password)
                 }
             }
+            is AuthUiEvents.OnConfirmPasswordChanged -> {
+                _authState.update {
+                    it.copy(confirmPassword = uiEvent.password)
+                }
+            }
+
+            AuthUiEvents.Register -> {
+                val isUsernameValid = true
+                    formValidatorUseCase.validateUsernameUseCase.invoke(
+                        authState.value.username
+                    )
+                val isMobileValid = true
+                    formValidatorUseCase.validateMobileUseCase.invoke(
+                        authState.value.username
+                    )
+                val isPasswordValid = true
+
+                if(isUsernameValid && isMobileValid && isPasswordValid) {
+                    register()
+                } else {
+                    Timber.d("Error validating form")
+                    viewModelScope.launch {
+                        _invalidCredentialsChannel.send(true)
+                    }
+                }
+            }
 
             AuthUiEvents.Login -> {
-
                 val isUsernameValid =
                     formValidatorUseCase.validateUsernameUseCase.invoke(
                         authState.value.username
                     )
-
-                val isMobileValid =
-                    formValidatorUseCase.validateMobileUseCase.invoke(
-                        authState.value.username
-                    )
-
                 val isPasswordValid = true
 //                    formValidatorUseCase.validatePasswordUseCase.invoke(
 //                        authState.value.password
@@ -77,6 +104,34 @@ class AuthViewModel @Inject constructor(
                         _invalidCredentialsChannel.send(true)
                     }
                 }
+            }
+
+
+        }
+    }
+
+    private fun register() {
+        viewModelScope.launch {
+            _authState.update {
+                it.copy(isLoading = true)
+            }
+
+            val result = authRepository.register(
+                authState.value.username,
+                authState.value.mobile,
+                authState.value.password
+            )
+
+            if(result == AuthResult.Authorized<Unit>()) {
+                groupRepository.insertGroup(
+                    createPersonalGroupUseCase().toGroupEntity()
+                )
+            }
+
+            _authResultChannel.send(result)
+
+            _authState.update {
+                it.copy(isLoading = false)
             }
         }
     }

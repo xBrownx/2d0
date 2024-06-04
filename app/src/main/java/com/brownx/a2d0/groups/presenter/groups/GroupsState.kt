@@ -1,6 +1,6 @@
 package com.brownx.a2d0.groups.presenter.groups
 
-import com.brownx.a2d0.core.data.local.group.Group
+import com.brownx.a2d0.main.data.local.group.GroupEntity
 
 /**
  * @author Andrew Brown
@@ -10,6 +10,6 @@ data class GroupsState (
 
     val isLoading: Boolean = false,
 
-    val groupsList: List<Group> = mutableListOf(),
+    val groupsList: List<GroupEntity> = mutableListOf(),
 
-)
+    )

@@ -1,10 +1,9 @@
 package com.brownx.a2d0.groups.presenter.group
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.brownx.a2d0.core.data.local.group.Group
-import com.brownx.a2d0.core.domain.repository.GroupRepository
+import com.brownx.a2d0.main.data.local.group.GroupEntity
+import com.brownx.a2d0.main.domain.repository.GroupRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,8 +34,8 @@ class GroupViewModel @Inject constructor(
 
     }
 
-    private fun deleteGroup(group: Group) = viewModelScope.launch {
-        groupRepository.deleteGroup(group)
+    private fun deleteGroup(groupEntity: GroupEntity) = viewModelScope.launch {
+        groupRepository.deleteGroup(groupEntity)
     }
 
 

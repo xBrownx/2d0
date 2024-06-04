@@ -10,10 +10,19 @@ sealed class AuthUiEvents {
         val username: String
     ) : AuthUiEvents()
 
+    data class OnMobileChanged(
+        val mobile: String
+    ) : AuthUiEvents()
+
     data class OnPasswordChanged(
         val password: String
     ) : AuthUiEvents()
 
+    data class OnConfirmPasswordChanged(
+        val password: String
+    ) : AuthUiEvents()
+
     data object Login : AuthUiEvents()
+    data object Register : AuthUiEvents()
 
 }

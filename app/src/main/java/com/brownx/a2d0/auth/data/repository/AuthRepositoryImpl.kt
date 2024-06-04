@@ -5,7 +5,9 @@ import com.brownx.a2d0.auth.data.remote.AuthApi
 import com.brownx.a2d0.auth.data.remote.dto.AuthRequest
 import com.brownx.a2d0.auth.domain.repository.AuthRepository
 import com.brownx.a2d0.auth.util.AuthResult
+import com.brownx.a2d0.main.domain.repository.GroupRepository
 import retrofit2.HttpException
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -15,7 +17,8 @@ import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authApi: AuthApi,
-    private val prefs: SharedPreferences
+    private val prefs: SharedPreferences,
+
 ) : AuthRepository {
     override suspend fun register(
         username: String,
@@ -24,8 +27,12 @@ class AuthRepositoryImpl @Inject constructor(
     ): AuthResult<Unit> {
         return try {
             authApi.register(
-                AuthRequest(username = username, password = password)
+                AuthRequest(
+                    username = username,
+                    mobile = mobile,
+                    password = password)
             )
+
             login(username, password)
         } catch (e: HttpException) {
             e.printStackTrace()
@@ -59,12 +66,14 @@ class AuthRepositoryImpl @Inject constructor(
         } catch (e: HttpException) {
             e.printStackTrace()
             println(e.message)
+            Timber.d("HttpException Error")
             if (e.code() == 401) {
                 AuthResult.Unauthorized()
             } else {
                 AuthResult.UnknownError()
             }
         } catch (e: Exception) {
+            Timber.d("Unknown Error")
             e.printStackTrace()
             println(e.message)
             AuthResult.UnknownError()

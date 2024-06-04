@@ -15,41 +15,29 @@ import javax.inject.Inject
 
 /**
  * @author Andrew Brown
- * created on 2/06/2024
+ * created on 4/06/2024
  */
 @HiltViewModel
 class CoreViewModel @Inject constructor(
     private val authRepository: AuthRepository
-) : ViewModel() {
+): ViewModel() {
 
     private val _authResultChannel = Channel<AuthResult<Unit>>()
     val authResultChannel = _authResultChannel.receiveAsFlow()
 
-    private val _coreState = MutableStateFlow(CoreState())
-    val coreState = _coreState.asStateFlow()
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading = _isLoading.asStateFlow()
 
     init {
         authenticate()
     }
 
-    fun onEvent(uiEvent: CoreUiEvents) {
-        when(uiEvent) {
-            is CoreUiEvents.LoadAll -> {
-
-            }
-        }
-    }
-
     private fun authenticate() {
         viewModelScope.launch {
-            _coreState.update {
-                it.copy(isLoading = true)
-            }
+            _isLoading.update { true }
             val result = authRepository.authenticate()
             _authResultChannel.send(result)
-            _coreState.update {
-                it.copy(isLoading = false)
-            }
+            _isLoading.update { false }
         }
     }
 }
