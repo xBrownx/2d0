@@ -17,7 +17,7 @@ class CreatePersonalGroupUseCase @Inject constructor(
             groupId = GenerateUuid().invoke(),
             groupName = "personal",
             groupOwnerId = prefs.getString("username", null)!!,
-            createDate = System.currentTimeMillis()
+            createdDateTimestamp = System.currentTimeMillis()
         )
     }
 }

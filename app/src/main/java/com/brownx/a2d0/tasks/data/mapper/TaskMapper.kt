@@ -19,7 +19,7 @@ fun TaskEntity.toTask(): Task {
         isRecurring = isRecurring,
         isComplete = isComplete,
         assignedBy = assignedBy,
-        assignedTo = assignedTo
+        //assignedTo = assignedTo
     )
 }
 
@@ -34,6 +34,6 @@ fun Task.toTaskEntity(): TaskEntity {
         isRecurring = isRecurring,
         isComplete = isComplete,
         assignedBy = assignedBy,
-        assignedTo = assignedTo
+        //assignedTo = assignedTo
     )
 }

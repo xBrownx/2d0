@@ -1,6 +1,9 @@
 package com.brownx.a2d0.auth.data.repository
 
+import android.annotation.SuppressLint
+import android.app.Application
 import android.content.SharedPreferences
+import android.provider.Settings.Secure
 import com.brownx.a2d0.auth.data.remote.AuthApi
 import com.brownx.a2d0.auth.data.remote.dto.AuthRequest
 import com.brownx.a2d0.auth.domain.repository.AuthRepository
@@ -17,7 +20,7 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val authApi: AuthApi,
     private val prefs: SharedPreferences,
-
+    private val application: Application
 ) : AuthRepository {
     override suspend fun register(
         username: String,
@@ -47,18 +50,31 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    @SuppressLint("HardwareIds")
     override suspend fun login(
         username: String,
         password: String
     ): AuthResult<Unit> {
         return try {
 
-            val authRespond = authApi.login(
-                authRequest = AuthRequest(username = username, password = password)
+            val deviceId = Secure.getString(
+                application.contentResolver,
+                Secure.ANDROID_ID
             )
+
+            val authRespond = authApi.login(
+                authRequest = AuthRequest(
+                    username = username,
+                    deviceId = deviceId,
+                    password = password
+                )
+            )
+
+            Timber.d("device_id = $deviceId")
 
             prefs.edit().putString("username", authRespond.username).apply()
             prefs.edit().putString("token", authRespond.token).apply()
+            prefs.edit().putString("device_id", deviceId).apply()
 
             AuthResult.Authorized()
 
@@ -79,6 +95,7 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+
     override suspend fun authenticate(): AuthResult<Unit> {
         return try {
 
@@ -86,8 +103,17 @@ class AuthRepositoryImpl @Inject constructor(
                 ?: return AuthResult.Unauthorized()
             val token = prefs.getString("token", null)
                 ?: return AuthResult.Unauthorized()
+            val deviceId = prefs.getString("device_id", null)
+                ?: return AuthResult.Unauthorized()
 
-            authApi.authenticate(authRequest = AuthRequest(username = username, token = token))
+
+            authApi.authenticate(
+                authRequest = AuthRequest(
+                    username = username,
+                    deviceId = deviceId,
+                    token = token
+                )
+            )
 
             AuthResult.Authorized()
         } catch (e: HttpException) {
@@ -104,12 +130,32 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun logout(): AuthResult<Unit> {
-        prefs.edit().putString("username", null).apply()
-        prefs.edit().putString("name", null).apply()
-        prefs.edit().putString("token", null).apply()
 
+        val username = prefs.getString("username", null)!!
+        val token = prefs.getString("token", null)!!
+        val deviceId = prefs.getString("device_id", null)!!
+
+        try {
+            authApi.logout(
+                authRequest = AuthRequest(
+                    username = username,
+                    deviceId = deviceId,
+                    token = token
+                )
+            )
+        } catch (e: HttpException) {
+            Timber.d("HttpException Error")
+        } catch (e: Exception) {
+            Timber.d("Unknown Error")
+            e.printStackTrace()
+        }
         //mainRepository.clearMainDb()
         //favoritesRepository.clearMainDb()
+
+        prefs.edit().putString("username", null).apply()
+        prefs.edit().putString("device_id", null).apply()
+        prefs.edit().putString("token", null).apply()
+
 
         return AuthResult.SingedOut()
     }

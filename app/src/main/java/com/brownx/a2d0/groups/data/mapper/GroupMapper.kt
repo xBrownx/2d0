@@ -2,6 +2,7 @@ package com.brownx.a2d0.groups.data.mapper
 
 import com.brownx.a2d0.groups.data.local.GroupEntity
 import com.brownx.a2d0.groups.domain.model.Group
+import com.google.gson.Gson
 
 /**
  * @author Andrew Brown
@@ -13,7 +14,7 @@ fun GroupEntity.toGroup(): Group {
         groupId = groupId,
         groupName = groupName,
         groupOwnerId = groupOwnerId,
-        createDate = createDate,
+        createdDateTimestamp = createdDateTimestamp,
     )
 }
 
@@ -22,6 +23,10 @@ fun Group.toGroupEntity(): GroupEntity {
         groupId = groupId,
         groupName = groupName,
         groupOwnerId = groupOwnerId,
-        createDate = createDate,
+        createdDateTimestamp = createdDateTimestamp,
     )
+}
+
+fun Group.toJson(): String {
+    return Gson().toJson(this)
 }

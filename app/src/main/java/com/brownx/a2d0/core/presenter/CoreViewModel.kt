@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -33,6 +34,7 @@ class CoreViewModel @Inject constructor(
     }
 
     private fun authenticate() {
+        Timber.d("authenticating")
         viewModelScope.launch {
             _isLoading.update { true }
             val result = authRepository.authenticate()

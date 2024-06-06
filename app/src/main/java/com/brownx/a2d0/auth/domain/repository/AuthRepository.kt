@@ -19,8 +19,9 @@ interface AuthRepository {
         password: String
     ): AuthResult<Unit>
 
-
     suspend fun authenticate(): AuthResult<Unit>
 
     suspend fun logout(): AuthResult<Unit>
+
+
 }

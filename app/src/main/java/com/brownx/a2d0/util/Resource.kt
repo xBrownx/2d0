@@ -8,13 +8,17 @@ sealed class Resource<out T>(
     val message: String? = null
 ) {
     data class Error(
-        val error: Throwable
-    ): Resource<Nothing>()
+        val error: String
+    ) : Resource<Nothing>()
 
     data class Success<T>(
         val data: T
-    ): Resource<T>()
+    ) : Resource<T>()
+
+    data class Loading<T>(
+        val isLoading: Boolean = true
+    ) : Resource<T>(null)
 
     data object Idle: Resource<Nothing>()
-    data object Loading : Resource<Nothing>()
+
 }

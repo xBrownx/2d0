@@ -1,5 +1,6 @@
 package com.brownx.a2d0.main.presenter.components
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +15,8 @@ import com.brownx.a2d0.groups.presenter.groups.GroupsScreen
 import com.brownx.a2d0.profile.presenter.ProfileScreen
 import com.brownx.a2d0.settings.presenter.SettingsScreen
 import com.brownx.a2d0.todo.presenter.TodoScreen
+import com.brownx.a2d0.util.Screen
+import timber.log.Timber
 
 /**
  * @author Andrew Brown
@@ -44,7 +47,14 @@ fun CorePager(
                 1 -> GroupsScreen(navController = navController)
                 2 -> TodoScreen()
                 3 -> ProfileScreen()
-                4 -> SettingsScreen()
+                4 -> SettingsScreen() {
+                    Timber.d("Logging out")
+                    navController.popBackStack()
+                    navController.popBackStack()
+                    navController.navigate(
+                        Screen.Auth.route
+                    )
+                }
             }
         }
     }

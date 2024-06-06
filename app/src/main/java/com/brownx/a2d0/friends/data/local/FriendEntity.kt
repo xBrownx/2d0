@@ -2,7 +2,7 @@ package com.brownx.a2d0.friends.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.brownx.a2d0.groups.domain.model.GroupList
+import com.brownx.a2d0.groups.domain.model.Group
 
 /**
  * @author Andrew Brown
@@ -12,7 +12,7 @@ import com.brownx.a2d0.groups.domain.model.GroupList
 @Entity(tableName = "user_table")
 data class FriendEntity(
     var userName: String = "",
-    var userGroups: GroupList
+    //var userGroups: List<Group>
 ) {
     @PrimaryKey(autoGenerate = true)
     var userId: Int? = null

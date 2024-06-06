@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -21,11 +22,13 @@ import androidx.navigation.NavHostController
 import com.brownx.a2d0.auth.presenter.AuthState
 import com.brownx.a2d0.auth.presenter.AuthUiEvents
 import com.brownx.a2d0.auth.presenter.AuthViewModel
+import com.brownx.a2d0.auth.util.AuthResult
 import com.brownx.a2d0.ui.components.CustomTextField
 import com.brownx.a2d0.ui.components.TopTitle
 import com.brownx.a2d0.ui.theme.softBlue
 import com.brownx.a2d0.ui.theme.softGrey
 import com.brownx.a2d0.util.Screen
+import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 
 /**
@@ -37,8 +40,21 @@ import timber.log.Timber
 fun RegisterScreen(
     navController: NavHostController,
     authViewModel: AuthViewModel,
-    authState: AuthState
+    authState: AuthState,
+    onAuthorized: () -> Unit
 ) {
+
+    LaunchedEffect(true) {
+        authViewModel.authResultChannel.collectLatest { result ->
+            when (result) {
+                is AuthResult.Authorized -> {
+                    onAuthorized()
+                }
+                else -> {}
+            }
+        }
+    }
+
     Scaffold(
         modifier = Modifier,
         topBar = {

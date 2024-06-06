@@ -20,5 +20,5 @@ data class TaskEntity(
     var isRecurring: Boolean = false,
     var isComplete: Boolean = false,
     var assignedBy: String = "",
-    var assignedTo: UserList? = null,
+    //var assignedTo: UserList? = null,
 )

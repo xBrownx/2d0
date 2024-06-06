@@ -8,6 +8,7 @@ import com.brownx.a2d0.auth.domain.usecase.FormValidatorUseCase
 import com.brownx.a2d0.auth.util.AuthResult
 import com.brownx.a2d0.groups.data.mapper.toGroupEntity
 import com.brownx.a2d0.groups.domain.repository.GroupRepository
+import com.brownx.a2d0.main.domain.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +28,7 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val groupRepository: GroupRepository,
+    private val mainRepository: MainRepository,
     private val formValidatorUseCase: FormValidatorUseCase,
     private val createPersonalGroupUseCase: CreatePersonalGroupUseCase
 ) : ViewModel() {
@@ -41,23 +43,26 @@ class AuthViewModel @Inject constructor(
     val invalidCredentialsChannel = _invalidCredentialsChannel.receiveAsFlow()
 
     fun onEvent(uiEvent: AuthUiEvents) {
-        when(uiEvent) {
+        when (uiEvent) {
 
             is AuthUiEvents.OnUsernameChanged -> {
                 _authState.update {
                     it.copy(username = uiEvent.username)
                 }
             }
+
             is AuthUiEvents.OnMobileChanged -> {
                 _authState.update {
                     it.copy(mobile = uiEvent.mobile)
                 }
             }
+
             is AuthUiEvents.OnPasswordChanged -> {
                 _authState.update {
                     it.copy(password = uiEvent.password)
                 }
             }
+
             is AuthUiEvents.OnConfirmPasswordChanged -> {
                 _authState.update {
                     it.copy(confirmPassword = uiEvent.password)
@@ -66,16 +71,16 @@ class AuthViewModel @Inject constructor(
 
             AuthUiEvents.Register -> {
                 val isUsernameValid = true
-                    formValidatorUseCase.validateUsernameUseCase.invoke(
-                        authState.value.username
-                    )
+                formValidatorUseCase.validateUsernameUseCase.invoke(
+                    authState.value.username
+                )
                 val isMobileValid = true
-                    formValidatorUseCase.validateMobileUseCase.invoke(
-                        authState.value.username
-                    )
+                formValidatorUseCase.validateMobileUseCase.invoke(
+                    authState.value.username
+                )
                 val isPasswordValid = true
 
-                if(isUsernameValid && isMobileValid && isPasswordValid) {
+                if (isUsernameValid && isMobileValid && isPasswordValid) {
                     register()
                 } else {
                     Timber.d("Error validating form")
@@ -95,7 +100,7 @@ class AuthViewModel @Inject constructor(
 //                        authState.value.password
 //                    )
 
-                if(isUsernameValid && isPasswordValid) {
+                if (isUsernameValid && isPasswordValid) {
                     login()
                 } else {
                     Timber.d("Error validating form")
@@ -110,6 +115,7 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun register() {
+        Timber.d("register")
         viewModelScope.launch {
             _authState.update {
                 it.copy(isLoading = true)
@@ -121,10 +127,18 @@ class AuthViewModel @Inject constructor(
                 authState.value.password
             )
 
-            if(result == AuthResult.Authorized<Unit>()) {
-                groupRepository.insertGroup(
-                    createPersonalGroupUseCase().toGroupEntity()
-                )
+            when (result) {
+                is AuthResult.Authorized -> {
+                    Timber.d("result is authorised")
+                    mainRepository.registerGroup(createPersonalGroupUseCase())
+                }
+
+                else -> {
+                    Timber.d("result is not authorised")
+                }
+//                groupRepository.insertGroup(
+//                    createPersonalGroupUseCase().toGroupEntity()
+//                )
             }
 
             _authResultChannel.send(result)
@@ -154,5 +168,6 @@ class AuthViewModel @Inject constructor(
             }
         }
     }
+
 
 }

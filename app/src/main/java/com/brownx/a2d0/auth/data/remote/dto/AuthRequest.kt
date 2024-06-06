@@ -5,7 +5,8 @@ package com.brownx.a2d0.auth.data.remote.dto
  * created on 2/06/2024
  */
 data class AuthRequest(
-    val username: String = "",
+    val username: String,
+    val deviceId: String = "",
     val mobile: String = "",
     val password: String = "",
     val token: String = ""

@@ -15,5 +15,5 @@ data class GroupEntity(
     var groupId: String = "",
     var groupName: String = "",
     var groupOwnerId: String = "",
-    var createDate: Long = 0L,
+    var createdDateTimestamp: Long = 0L,
 )

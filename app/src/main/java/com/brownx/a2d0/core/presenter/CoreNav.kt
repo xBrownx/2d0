@@ -18,6 +18,7 @@ import com.brownx.a2d0.groups.presenter.group.GroupScreen
 import com.brownx.a2d0.groups.presenter.groups.GroupsScreen
 import com.brownx.a2d0.main.presenter.MainUiEvents
 import com.brownx.a2d0.main.presenter.MainViewModel
+import com.brownx.a2d0.tasks.presenter.CreateTaskScreen
 import com.brownx.a2d0.util.Screen
 import timber.log.Timber
 
@@ -110,7 +111,10 @@ fun CoreNav(
                 RegisterScreen(
                     navController = mainNavController,
                     authViewModel = authViewModel,
-                    authState = authState
+                    authState = authState,
+                    onAuthorized = {
+                        mainNavController.navigate(Screen.Home.route)
+                    }
                 )
             }
         }
@@ -120,13 +124,13 @@ fun CoreNav(
             enterTransition = {
                 slideIntoContainer(
                     animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Left
+                    towards = AnimatedContentTransitionScope.SlideDirection.Down
                 )
             },
             exitTransition = {
                 slideOutOfContainer(
                     animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Right
+                    towards = AnimatedContentTransitionScope.SlideDirection.Up
                 )
             }
         ) {
@@ -149,6 +153,26 @@ fun CoreNav(
             ) {
                 GroupScreen(navController = mainNavController)
             }
+        }
+
+        composable(
+            route = Screen.Home.CreateTask.route,
+            enterTransition = {
+                slideIntoContainer(
+                    animationSpec = tween(durationMillis = 300),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Up
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    animationSpec = tween(durationMillis = 300),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Down
+                )
+            }
+        ) {
+            CreateTaskScreen(
+                navController = mainNavController
+            )
         }
     }
 }

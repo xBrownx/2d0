@@ -1,6 +1,6 @@
 package com.brownx.a2d0.friends.domain.model
 
-import com.brownx.a2d0.groups.domain.model.GroupList
+import com.brownx.a2d0.groups.domain.model.Group
 
 /**
  * @author Andrew Brown
@@ -9,6 +9,6 @@ import com.brownx.a2d0.groups.domain.model.GroupList
 data class User(
     val userId: String,
     val userName: String,
-    val userGroups: GroupList,
-    val userFriends: UserList,
+    val userGroups: List<Group>,
+    val userFriends: List<User>,
 )
