@@ -1,7 +1,6 @@
 package com.brownx.a2d0.groups.presenter.groups
 
-import com.brownx.a2d0.groups.data.local.GroupEntity
-import com.brownx.a2d0.groups.domain.model.Group
+import com.brownx.a2d0.main.domain.model.Group
 import com.brownx.a2d0.groups.util.GroupSortType
 
 /**

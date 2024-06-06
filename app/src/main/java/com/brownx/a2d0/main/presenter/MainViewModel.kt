@@ -2,9 +2,6 @@ package com.brownx.a2d0.main.presenter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.brownx.a2d0.groups.domain.repository.GroupRepository
-import com.brownx.a2d0.tasks.data.repository.TaskRepository
-import com.brownx.a2d0.friends.domain.repository.FriendsRepository
 import com.brownx.a2d0.main.domain.repository.MainRepository
 import com.brownx.a2d0.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,44 +18,47 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val mainRepository: MainRepository,
-    private val groupRepository: GroupRepository,
-    private val taskRepository: TaskRepository,
-    private val friendsRepository: FriendsRepository
 ) : ViewModel() {
 
     private val _mainState = MutableStateFlow(MainState())
     val mainState = _mainState.asStateFlow()
 
     init {
-        loadAll()
+        refresh()
     }
 
     fun onEvent(uiEvent: MainUiEvents) {
 
     }
 
-    private fun loadAll() {
+    fun refresh() {
         viewModelScope.launch {
-            mainRepository.getGroupsByUser().collect { result ->
+            mainRepository.getUserGroupsFromRemote().collect { result ->
                 when (result) {
-                    is Resource.Error -> Unit
+                    is Resource.Success -> {
+                        result.data.let { groupList ->
 
+                        }
+                    }
                     is Resource.Loading -> {
                         _mainState.update {
                             it.copy(isLoading = result.isLoading)
                         }
                     }
 
-                    is Resource.Success -> {
-                        result.data.let { groupList ->
-
-
-                        }
-                    }
-
                     else -> {}
+                }
+                _mainState.update {
+                    it.copy(
+                        isLoading = false,
+                        isRefreshing = false
+                    )
                 }
             }
         }
+    }
+
+    private fun loadAll() {
+
     }
 }

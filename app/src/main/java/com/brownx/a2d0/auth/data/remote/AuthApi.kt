@@ -1,13 +1,11 @@
 package com.brownx.a2d0.auth.data.remote
 import com.brownx.a2d0.auth.data.remote.dto.AuthRequest
 import com.brownx.a2d0.auth.data.remote.dto.AuthResponse
-import com.brownx.a2d0.util.Const.AUTHENTICATE_ROUTE
-import com.brownx.a2d0.util.Const.LOGIN_ROUTE
-import com.brownx.a2d0.util.Const.LOGOUT_ROUTE
-import com.brownx.a2d0.util.Const.REGISTER_ROUTE
+import com.brownx.a2d0.main.util.Const.AUTHENTICATE_ROUTE
+import com.brownx.a2d0.main.util.Const.LOGIN_ROUTE
+import com.brownx.a2d0.main.util.Const.LOGOUT_ROUTE
+import com.brownx.a2d0.main.util.Const.REGISTER_ROUTE
 import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 /**
  * @author Andrew Brown

@@ -57,13 +57,14 @@ fun GroupsScreen(
                 verticalArrangement = Arrangement.spacedBy(0.dp)
             ) {
                 items(groupsState.groupsList) {group ->
-                    GroupListButton(group.groupName) {
-                        navController.navigate(Screen.Home.Groups.Group.route)
+                    GroupListButton(group) {
+
                     }
                 }
+
                 item {
                     AddGroupButton {
-                        navController.navigate(Screen.Home.Groups.CreateGroup.route)
+
                     }
                 }
             }

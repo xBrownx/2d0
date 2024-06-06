@@ -1,9 +1,6 @@
 package com.brownx.a2d0.auth.di
 
-import android.app.Application
 import android.content.SharedPreferences
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
 import com.brownx.a2d0.auth.data.remote.AuthApi
 import com.brownx.a2d0.auth.domain.usecase.CreatePersonalGroupUseCase
 import com.brownx.a2d0.auth.domain.usecase.FormValidatorUseCase
@@ -11,11 +8,10 @@ import com.brownx.a2d0.auth.domain.usecase.ValidateEmailUseCase
 import com.brownx.a2d0.auth.domain.usecase.ValidateMobileUseCase
 import com.brownx.a2d0.auth.domain.usecase.ValidatePasswordUseCase
 import com.brownx.a2d0.auth.domain.usecase.ValidateUsernameUseCase
-import com.brownx.a2d0.util.Const.SERVER_IP
+import com.brownx.a2d0.main.util.Const.SERVER_IP
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

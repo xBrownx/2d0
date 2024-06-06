@@ -2,8 +2,8 @@ package com.brownx.a2d0.groups.presenter.createGroup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.brownx.a2d0.groups.data.local.GroupEntity
-import com.brownx.a2d0.groups.domain.repository.GroupRepository
+import com.brownx.a2d0.main.data.local.entity.GroupEntity
+import com.brownx.a2d0.main.domain.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateGroupViewModel @Inject constructor(
-    private val groupRepository: GroupRepository
+    private val mainRepository: MainRepository
 ) : ViewModel() {
 
     private val _createGroupState = MutableStateFlow(CreateGroupState())
@@ -39,7 +39,7 @@ class CreateGroupViewModel @Inject constructor(
         }
     }
 
-    private fun insertGroup(groupEntity: GroupEntity) = viewModelScope.launch {
-        groupRepository.insertGroup(groupEntity)
-    }
+//    private fun insertGroup(groupEntity: GroupEntity) = viewModelScope.launch {
+//        mainRepository.insertGroup(groupEntity)
+//    }
 }

@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 fun LetterIcon(
     backgroundColour: Color,
     textColour: Color,
-    letter: String
+    letter: Char
 ) {
     IconButton(onClick = { /*TODO*/ }) {
         Canvas(
@@ -37,7 +37,7 @@ fun LetterIcon(
         }
         TextWithShadow(
             modifier = Modifier,
-            text = letter,
+            text = letter.toString(),
             textColour = textColour,
             xOffset = -1f,
             yOffset = 1f

@@ -14,6 +14,8 @@ import androidx.compose.ui.unit.sp
 import com.brownx.a2d0.ui.components.LetterIcon
 import com.brownx.a2d0.ui.components.TextWithShadow
 import com.brownx.a2d0.ui.theme.softBlue
+import com.brownx.a2d0.ui.theme.softGrey
+import com.brownx.a2d0.ui.theme.softYellow
 
 /**
  * @author Andrew Brown
@@ -22,12 +24,13 @@ import com.brownx.a2d0.ui.theme.softBlue
 @Composable
 fun ListItemButton(
     title: String,
-    leftIconLetter: String,
-    leftIconColour: Color,
-    leftIconTextColor: Color,
-    rightIconLetter: String,
-    rightIconColour: Color,
-    rightIconTextColor: Color,
+    leftIconLetter: Char = 'A',
+    leftIconColour: Color = softYellow,
+    leftIconTextColor: Color = softGrey,
+    rightIconLetter: Char = '!',
+    rightIconColour: Color = softYellow,
+    rightIconTextColor: Color = softGrey,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier

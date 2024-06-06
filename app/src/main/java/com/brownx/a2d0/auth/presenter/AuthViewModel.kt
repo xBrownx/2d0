@@ -6,8 +6,6 @@ import com.brownx.a2d0.auth.domain.repository.AuthRepository
 import com.brownx.a2d0.auth.domain.usecase.CreatePersonalGroupUseCase
 import com.brownx.a2d0.auth.domain.usecase.FormValidatorUseCase
 import com.brownx.a2d0.auth.util.AuthResult
-import com.brownx.a2d0.groups.data.mapper.toGroupEntity
-import com.brownx.a2d0.groups.domain.repository.GroupRepository
 import com.brownx.a2d0.main.domain.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -27,7 +25,6 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val groupRepository: GroupRepository,
     private val mainRepository: MainRepository,
     private val formValidatorUseCase: FormValidatorUseCase,
     private val createPersonalGroupUseCase: CreatePersonalGroupUseCase
@@ -128,17 +125,9 @@ class AuthViewModel @Inject constructor(
             )
 
             when (result) {
-                is AuthResult.Authorized -> {
-                    Timber.d("result is authorised")
-                    mainRepository.registerGroup(createPersonalGroupUseCase())
-                }
-
-                else -> {
-                    Timber.d("result is not authorised")
-                }
-//                groupRepository.insertGroup(
-//                    createPersonalGroupUseCase().toGroupEntity()
-//                )
+                is AuthResult.Authorized -> mainRepository
+                    .registerGroup(createPersonalGroupUseCase())
+                else -> Timber.d("result is not authorised")
             }
 
             _authResultChannel.send(result)

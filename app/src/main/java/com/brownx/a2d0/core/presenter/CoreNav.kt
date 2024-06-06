@@ -18,9 +18,8 @@ import com.brownx.a2d0.groups.presenter.group.GroupScreen
 import com.brownx.a2d0.groups.presenter.groups.GroupsScreen
 import com.brownx.a2d0.main.presenter.MainUiEvents
 import com.brownx.a2d0.main.presenter.MainViewModel
-import com.brownx.a2d0.tasks.presenter.CreateTaskScreen
+import com.brownx.a2d0.todo.presenter.components.CreateTaskDialog
 import com.brownx.a2d0.util.Screen
-import timber.log.Timber
 
 /**
  * @author Andrew Brown
@@ -31,10 +30,12 @@ fun CoreNav(
     coreViewModel: CoreViewModel
 ) {
     val mainNavController = rememberNavController()
-    val mainViewModel = hiltViewModel<MainViewModel>()
-    val mainState by mainViewModel.mainState.collectAsState()
+
     val authViewModel = hiltViewModel<AuthViewModel>()
     val authState by authViewModel.authState.collectAsState()
+
+    val mainViewModel = hiltViewModel<MainViewModel>()
+    val mainState by mainViewModel.mainState.collectAsState()
 
     NavHost(
         navController = mainNavController,
@@ -45,7 +46,6 @@ fun CoreNav(
             CoreScreen(
                 coreViewModel.authResultChannel,
                 onAuthorized = {
-                    Timber.d("AUTHORISED MOTHER FUCKER")
                     mainViewModel.onEvent(
                         MainUiEvents.LoadAllRemoteData
                     )
@@ -55,7 +55,6 @@ fun CoreNav(
                     )
                 },
                 onNotAuthorized = {
-                    Timber.d("NOT AUTHORISED MOTHER CUNT")
                     mainNavController.popBackStack()
                     mainNavController.navigate(
                         Screen.Auth.route
@@ -170,7 +169,7 @@ fun CoreNav(
                 )
             }
         ) {
-            CreateTaskScreen(
+            CreateTaskDialog(
                 navController = mainNavController
             )
         }

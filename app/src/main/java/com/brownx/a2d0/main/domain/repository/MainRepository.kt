@@ -1,10 +1,8 @@
 package com.brownx.a2d0.main.domain.repository
 
-import com.brownx.a2d0.friends.domain.model.User
-import com.brownx.a2d0.friends.domain.model.UserList
-import com.brownx.a2d0.groups.domain.model.Group
-import com.brownx.a2d0.tasks.domain.model.Task
-import com.brownx.a2d0.tasks.domain.model.TaskList
+import com.brownx.a2d0.main.domain.model.Friend
+import com.brownx.a2d0.main.domain.model.Group
+import com.brownx.a2d0.main.domain.model.Task
 import com.brownx.a2d0.util.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -14,21 +12,29 @@ import kotlinx.coroutines.flow.Flow
  */
 interface MainRepository {
 
-    suspend fun getGroupsByUser() : Flow<Resource<List<Group>>>
+    suspend fun getUserGroupsFromRemote() : Flow<Resource<List<Group>>>
 
-    suspend fun getTasksByUser(
-        username: String
-    ) : Flow<Resource<List<Task>>>
+    suspend fun getUserTasksFromRemote(groupsList: List<Group>) : Flow<Resource<List<Task>>>
 
-    suspend fun getFriendsByUser(
-        username: String
-    ) : Flow<Resource<List<User>>>
+    suspend fun getUserFriendsFromRemote() : Flow<Resource<List<Friend>>>
+
+    suspend fun getUserGroupsFromLocal() : Flow<Resource<List<Group>>>
+
+    suspend fun getUserTasksFromLocal(): Flow<Resource<List<Task>>>
+
+    suspend fun getUserFriendsFromLocal(): Flow<Resource<List<Friend>>>
+
+    suspend fun upsertGroupsList(groupsList: List<Group>)
+
+    suspend fun upsertGroupItem(group: Group)
+
+
 
     suspend fun registerGroup(group: Group)
 
-    suspend fun upsertTasksList(tasksList: TaskList)
+    suspend fun upsertTasksList(tasksList: List<Task>)
 
-    suspend fun upsertFriendsList(friendsList: UserList)
+    suspend fun upsertFriendsList(friendsList: List<Friend>)
 
     suspend fun upsertGroup(group: Group)
 
