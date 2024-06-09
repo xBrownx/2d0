@@ -26,7 +26,7 @@ class TodoViewModel @Inject constructor (
     val todoState = _todoState.asStateFlow()
 
     init {
-        getTaskListFromLocal()
+        //getTaskListFromLocal()
     }
 
     fun onEvent(uiEvent: TodoUiEvents) {
@@ -44,9 +44,9 @@ class TodoViewModel @Inject constructor (
                             it.copy(todoList = result.data)
                         }
                     }
-                    is Resource.Error -> Timber.d("Resource.Error == ${result.error}")
-                    is Resource.Loading -> Timber.d("Resource.Loading == ${result.isLoading}")
-                    Resource.Idle -> Timber.d("Resource.Idle == ${result.message}")
+                    is Resource.Error -> { Timber.d("Resource.Error == ${result.error}") }
+                    is Resource.Loading -> { Timber.d("Resource.Loading == ${result.isLoading}") }
+                    Resource.Idle -> { Timber.d("Resource.Idle == ${result.message}") }
 
                 }
             }

@@ -8,5 +8,5 @@ data class Group(
     var groupId: String = "",
     var groupName: String = "",
     var groupOwnerId: String = "",
-    var createdDateTimestamp: Long = 0L,
+    var createdTimestamp: Long = 0L,
 )

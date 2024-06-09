@@ -10,8 +10,8 @@ import com.brownx.a2d0.main.domain.model.Task
 data class ServerQuery(
     val username: String,
     val token: String,
+    val deviceId: String? = null,
     val group: Group? = null,
     val groupIds: List<String>? = null,
     val task: Task? = null,
-
     )

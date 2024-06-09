@@ -14,7 +14,7 @@ fun GroupEntity.toGroup(): Group {
         groupId = groupId,
         groupName = groupName,
         groupOwnerId = groupOwnerId,
-        createdDateTimestamp = createdDateTimestamp,
+        createdTimestamp = createdTimestamp,
     )
 }
 
@@ -23,7 +23,7 @@ fun Group.toGroupEntity(): GroupEntity {
         groupId = groupId,
         groupName = groupName,
         groupOwnerId = groupOwnerId,
-        createdDateTimestamp = createdDateTimestamp,
+        createdTimestamp = createdTimestamp,
     )
 }
 

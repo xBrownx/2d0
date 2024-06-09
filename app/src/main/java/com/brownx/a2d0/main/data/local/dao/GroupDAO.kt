@@ -23,7 +23,7 @@ interface GroupDAO {
     @Upsert
     suspend fun upsertGroupItem(groupEntity: GroupEntity)
 
-    @Query("SELECT * FROM group_table ORDER BY createdDateTimestamp ASC")
+    @Query("SELECT * FROM group_table ORDER BY createdTimestamp ASC")
     suspend fun getAllGroups(): List<GroupEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

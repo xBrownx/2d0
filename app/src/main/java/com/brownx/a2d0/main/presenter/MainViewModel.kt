@@ -7,8 +7,10 @@ import com.brownx.a2d0.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -23,22 +25,19 @@ class MainViewModel @Inject constructor(
     private val _mainState = MutableStateFlow(MainState())
     val mainState = _mainState.asStateFlow()
 
-    init {
-        refresh()
-    }
-
     fun onEvent(uiEvent: MainUiEvents) {
-
+        when(uiEvent) {
+            MainUiEvents.LoadAllRemoteData -> refresh()
+        }
     }
 
-    fun refresh() {
+    private fun refresh() {
+        Timber.d("REFRESHING FROM MAIN VIEW MODEL")
         viewModelScope.launch {
-            mainRepository.getUserGroupsFromRemote().collect { result ->
+            mainRepository.getUserDataFromRemote().collectLatest { result ->
                 when (result) {
                     is Resource.Success -> {
-                        result.data.let { groupList ->
-
-                        }
+                        Timber.d("MISSION SUCCESS")
                     }
                     is Resource.Loading -> {
                         _mainState.update {
@@ -46,7 +45,9 @@ class MainViewModel @Inject constructor(
                         }
                     }
 
-                    else -> {}
+                    else -> {
+                        Timber.d("MISSION SUCCESS")
+                    }
                 }
                 _mainState.update {
                     it.copy(

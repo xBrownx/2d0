@@ -2,6 +2,7 @@ package com.brownx.a2d0.main.domain.repository
 
 import com.brownx.a2d0.main.domain.model.Friend
 import com.brownx.a2d0.main.domain.model.Group
+import com.brownx.a2d0.main.domain.model.RemoteUserData
 import com.brownx.a2d0.main.domain.model.Task
 import com.brownx.a2d0.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -12,11 +13,13 @@ import kotlinx.coroutines.flow.Flow
  */
 interface MainRepository {
 
+    suspend fun getUserDataFromRemote() : Flow<Resource<RemoteUserData>>
+
     suspend fun getUserGroupsFromRemote() : Flow<Resource<List<Group>>>
 
-    suspend fun getUserTasksFromRemote(groupsList: List<Group>) : Flow<Resource<List<Task>>>
-
-    suspend fun getUserFriendsFromRemote() : Flow<Resource<List<Friend>>>
+//    suspend fun getUserTasksFromRemote(groupsList: List<Group>) : Flow<Resource<List<Task>>>
+//
+//    suspend fun getUserFriendsFromRemote() : Flow<Resource<List<Friend>>>
 
     suspend fun getUserGroupsFromLocal() : Flow<Resource<List<Group>>>
 
@@ -27,8 +30,6 @@ interface MainRepository {
     suspend fun upsertGroupsList(groupsList: List<Group>)
 
     suspend fun upsertGroupItem(group: Group)
-
-
 
     suspend fun registerGroup(group: Group)
 

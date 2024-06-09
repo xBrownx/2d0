@@ -2,7 +2,6 @@ package com.brownx.a2d0.auth.di
 
 import android.content.SharedPreferences
 import com.brownx.a2d0.auth.data.remote.AuthApi
-import com.brownx.a2d0.auth.domain.usecase.CreatePersonalGroupUseCase
 import com.brownx.a2d0.auth.domain.usecase.FormValidatorUseCase
 import com.brownx.a2d0.auth.domain.usecase.ValidateEmailUseCase
 import com.brownx.a2d0.auth.domain.usecase.ValidateMobileUseCase
@@ -45,11 +44,5 @@ class AuthModule {
             ValidatePasswordUseCase(),
             ValidateUsernameUseCase()
         )
-    }
-
-    @Provides
-    @Singleton
-    fun provideCreatePersonalGroupUseCase(prefs: SharedPreferences): CreatePersonalGroupUseCase {
-        return CreatePersonalGroupUseCase(prefs = prefs)
     }
 }

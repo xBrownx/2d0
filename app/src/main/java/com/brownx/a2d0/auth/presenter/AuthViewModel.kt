@@ -3,7 +3,6 @@ package com.brownx.a2d0.auth.presenter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brownx.a2d0.auth.domain.repository.AuthRepository
-import com.brownx.a2d0.auth.domain.usecase.CreatePersonalGroupUseCase
 import com.brownx.a2d0.auth.domain.usecase.FormValidatorUseCase
 import com.brownx.a2d0.auth.util.AuthResult
 import com.brownx.a2d0.main.domain.repository.MainRepository
@@ -27,7 +26,6 @@ class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val mainRepository: MainRepository,
     private val formValidatorUseCase: FormValidatorUseCase,
-    private val createPersonalGroupUseCase: CreatePersonalGroupUseCase
 ) : ViewModel() {
 
     private val _authState = MutableStateFlow(AuthState())
@@ -123,15 +121,7 @@ class AuthViewModel @Inject constructor(
                 authState.value.mobile,
                 authState.value.password
             )
-
-            when (result) {
-                is AuthResult.Authorized -> mainRepository
-                    .registerGroup(createPersonalGroupUseCase())
-                else -> Timber.d("result is not authorised")
-            }
-
             _authResultChannel.send(result)
-
             _authState.update {
                 it.copy(isLoading = false)
             }

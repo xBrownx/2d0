@@ -16,7 +16,10 @@ fun TaskEntity.toTask(): Task {
         taskName = taskName,
         taskDescription = taskDescription,
         dueDate = dueDate,
-        isRecurring = isRecurring,
+        isRepeat = isRepeat,
+        repeatFrequency = repeatFrequency,
+        repeatFrequencyUnit = repeatFrequencyUnit,
+        completeTimestamp = completeTimestamp,
         isComplete = isComplete,
         assignedBy = assignedBy,
         //assignedTo = assignedTo
@@ -31,7 +34,10 @@ fun Task.toTaskEntity(): TaskEntity {
         taskName = taskName,
         taskDescription = taskDescription,
         dueDate = dueDate,
-        isRecurring = isRecurring,
+        isRepeat = isRepeat,
+        repeatFrequency = repeatFrequency,
+        repeatFrequencyUnit = repeatFrequencyUnit,
+        completeTimestamp = completeTimestamp,
         isComplete = isComplete,
         assignedBy = assignedBy,
         //assignedTo = assignedTo

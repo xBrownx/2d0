@@ -1,9 +1,8 @@
 package com.brownx.a2d0.main.data.remote
 
 import com.brownx.a2d0.main.data.remote.dto.ServerQuery
-import com.brownx.a2d0.main.data.remote.dto.ServerReponse
+import com.brownx.a2d0.main.data.remote.dto.ServerResponse
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.POST
 
 /**
@@ -15,30 +14,35 @@ import retrofit2.http.POST
 
 interface MainApi {
 
+    @POST("/get-user-data")
+    suspend fun getUserData(
+        @Body query: ServerQuery
+    ) : ServerResponse?
+
     @POST("/user-group-query")
     suspend fun getGroupIdsForUser(
         @Body query: ServerQuery
-    ) : ServerReponse?
+    ) : ServerResponse?
 
     @POST("/group-task-query")
     suspend fun getTasksFromGroupIds(
         @Body query: ServerQuery
-    ) : ServerReponse?
+    ) : ServerResponse?
 
     @POST("/user-friends-query")
     suspend fun getFriendsForUser(
         @Body query: ServerQuery
-    ) : ServerReponse?
+    ) : ServerResponse?
 
     @POST("/register-group")
     suspend fun registerGroup(
         @Body query: ServerQuery
-    ) : ServerReponse?
+    ) : ServerResponse?
 
     @POST("/register-task")
     suspend fun registerTask(
         @Body query: ServerQuery
-    ) : ServerReponse?
+    ) : ServerResponse?
 
 
 

@@ -11,8 +11,11 @@ data class Task(
     var taskName: String = "",
     var taskDescription: String = "",
     var dueDate: Long = 0L,
-    var isRecurring: Boolean = false,
+    var isRepeat: Boolean = false,
+    var repeatFrequency: Int = 0,
+    var repeatFrequencyUnit: String = "",
     var isComplete: Boolean = false,
+    var completeTimestamp: List<Long> = listOf(),
     var assignedBy: String = "",
     var assignedTo: List<Friend>? = null,
 )
