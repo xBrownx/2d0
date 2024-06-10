@@ -32,7 +32,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun refresh() {
-        Timber.d("REFRESHING FROM MAIN VIEW MODEL")
+        Timber.d("Refreshing from main State")
         viewModelScope.launch {
             mainRepository.getUserDataFromRemote().collectLatest { result ->
                 when (result) {
@@ -44,9 +44,8 @@ class MainViewModel @Inject constructor(
                             it.copy(isLoading = result.isLoading)
                         }
                     }
-
                     else -> {
-                        Timber.d("MISSION SUCCESS")
+                        Timber.d("MISSION FAILED")
                     }
                 }
                 _mainState.update {

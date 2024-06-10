@@ -1,4 +1,4 @@
-package com.brownx.a2d0.groups.presenter.createGroup
+package com.brownx.a2d0.todo.presenter.createTask
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -14,28 +14,30 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.brownx.a2d0.todo.presenter.createTask.CreateTaskUiEvents
+import androidx.navigation.NavHostController
 import com.brownx.a2d0.ui.components.CustomDropdown
 import com.brownx.a2d0.ui.components.CustomTextField
 import com.brownx.a2d0.ui.components.TopTitle
 import com.brownx.a2d0.ui.theme.softGrey
 import com.brownx.a2d0.ui.theme.softYellow
+import com.brownx.a2d0.util.Screen
 
 /**
  * @author Andrew Brown
- * created on 29/05/2024
+ * created on 6/06/2024
  */
 
 @Composable
-fun CreateGroupDialog(
+fun CreateTaskDialog(
     onExit: () -> Unit
 ) {
-    val createGroupViewModel = hiltViewModel<CreateGroupViewModel>()
-    val createGroupState by createGroupViewModel.createGroupState.collectAsState()
+
+    val createTaskViewModel = hiltViewModel<CreateTaskViewModel>()
+    val createTaskState by createTaskViewModel.createTaskState.collectAsState()
 
     Scaffold(
         topBar = {
-            TopTitle(title = "CREATE GROUP")
+            TopTitle(title = "ADD TASK")
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -49,6 +51,7 @@ fun CreateGroupDialog(
                 )
             }
         }
+
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -56,21 +59,48 @@ fun CreateGroupDialog(
                 .background(softGrey)
                 .fillMaxSize()
         ) {
-
+            CustomDropdown(
+                value = createTaskState.groupName,
+                label = "GROUP",
+                list = createTaskState.groupsList.map {
+                    it.groupName.uppercase()
+                },
+                onSelect = {
+                    createTaskViewModel.onEvent(
+                        CreateTaskUiEvents.OnGroupNameChanged(
+                            groupName = it.uppercase()
+                        )
+                    )
+                }
+            )
             CustomTextField(
-                value = createGroupState.groupName,
-                label = "GROUP NAME"
+                value = createTaskState.taskName,
+                label = "TASK NAME"
             ) {
-                createGroupViewModel.onEvent(
-                    CreateGroupUiEvent.OnEditGroupName(it)
+                createTaskViewModel.onEvent(
+                    CreateTaskUiEvents.OnTaskNameChanged(
+                        taskName = it.uppercase()
+                    )
                 )
             }
             CustomTextField(
-                value = createGroupState.groupName,
-                label = "DESCRIPTION"
+                value = createTaskState.taskDesc,
+                label = "DESC"
             ) {
-                createGroupViewModel.onEvent(
-                    CreateGroupUiEvent.OnEditGroupName(it)
+                createTaskViewModel.onEvent(
+                    CreateTaskUiEvents.OnTaskDescChanged(
+                        taskDesc = it.uppercase()
+                    )
+                )
+            }
+            CustomTextField(
+                value = createTaskState.dueDate,
+                label = "DUE DATE"
+            ) {
+                createTaskViewModel.onEvent(
+                    CreateTaskUiEvents.OnDueDateChanged(
+                        dueDate = it.uppercase()
+                    )
                 )
             }
         }

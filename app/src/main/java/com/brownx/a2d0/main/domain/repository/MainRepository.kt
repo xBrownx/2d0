@@ -15,12 +15,6 @@ interface MainRepository {
 
     suspend fun getUserDataFromRemote() : Flow<Resource<RemoteUserData>>
 
-    suspend fun getUserGroupsFromRemote() : Flow<Resource<List<Group>>>
-
-//    suspend fun getUserTasksFromRemote(groupsList: List<Group>) : Flow<Resource<List<Task>>>
-//
-//    suspend fun getUserFriendsFromRemote() : Flow<Resource<List<Friend>>>
-
     suspend fun getUserGroupsFromLocal() : Flow<Resource<List<Group>>>
 
     suspend fun getUserTasksFromLocal(): Flow<Resource<List<Task>>>

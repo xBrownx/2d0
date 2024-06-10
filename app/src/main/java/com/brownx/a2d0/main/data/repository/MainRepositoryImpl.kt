@@ -67,156 +67,28 @@ class MainRepositoryImpl @Inject constructor(
                 }
             remoteData?.let { data ->
 
-                val groupEntities = data.groups.map { it.toGroupEntity() }
-                val taskEntities = data.tasks.map { it.toTaskEntity() }
-                val friendEntities = data.friends.map { it.toFriendEntity() }
-
-                groupEntities.let {
-                    mainDatabase.getGroupDao().upsertGroupList(it)
+                data.groups.let { groups ->
+                    mainDatabase.getGroupDao().upsertGroupList(
+                        groups.map { it.toGroupEntity() }
+                    )
+                }
+                data.tasks.let { tasks ->
+                    mainDatabase.getTaskDao().upsertTaskList(
+                        tasks.map { it.toTaskEntity() }
+                    )
+                }
+                data.friends.let { friends ->
+                    mainDatabase.getFriendDao().upsertFriendsList(
+                        friends.map { it.toFriendEntity() }
+                    )
                 }
 
-                taskEntities.let {
-                    mainDatabase.getTaskDao().upsertTaskList(it)
-                }
-
-                friendEntities.let {
-                    mainDatabase.getFriendDao().upsertFriendsList(it)
-                }
                 emit(Resource.Loading(false))
+                emit(Resource.Success(remoteData))
                 return@flow
             }
         }
     }
-
-    override suspend fun getUserGroupsFromRemote(): Flow<Resource<List<Group>>> {
-
-        return flow {}
-//
-//            emit(Resource.Loading(true))
-//
-//            val remoteGroups = try {
-//                mainApi.getGroupIdsForUser(
-//                    ServerQuery(
-//                        username = prefs.getString("username", null)!!,
-//                        token = prefs.getString("token", null)!!
-//                    )
-//                )?.data?.filterIsInstance<Group>()
-//            } catch (e: IOException) {
-//                e.printStackTrace()
-//                emit(Resource.Error("Couldn't load data"))
-//                emit(Resource.Loading(false))
-//                return@flow
-//            } catch (e: HttpException) {
-//                e.printStackTrace()
-//                emit(Resource.Error("Couldn't load data"))
-//                emit(Resource.Loading(false))
-//                return@flow
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                emit(Resource.Error("Couldn't load data"))
-//                emit(Resource.Loading(false))
-//                return@flow
-//            }
-//
-//            remoteGroups?.let { groups ->
-//                val entities = groups.map { it.toGroupEntity() }
-//                mainDatabase
-//                    .getGroupDao()
-//                    .upsertGroupList(entities)
-//                emit(Resource.Success(entities.map { it.toGroup() }))
-//                emit(Resource.Loading(false))
-//                return@flow
-//            }
-//        }
-    }
-
-//    override suspend fun getUserTasksFromRemote(groupsList: List<Group>): Flow<Resource<List<Task>>> {
-//
-//        return flow {
-//            emit(Resource.Loading(true))
-//
-//            val groupIds = groupsList.map {
-//                it.groupId
-//            }
-//
-//            val remoteTasks = try {
-//                mainApi.getTasksFromGroupIds(
-//                    ServerQuery(
-//                        username = prefs.getString("username", null)!!,
-//                        token = prefs.getString("token", null)!!,
-//                        groupIds = groupIds
-//                    )
-//                )?.data?.filterIsInstance<Task>()
-//            } catch (e: IOException) {
-//                e.printStackTrace()
-//                emit(Resource.Error("Couldn't load data"))
-//                emit(Resource.Loading(false))
-//                return@flow
-//            } catch (e: HttpException) {
-//                e.printStackTrace()
-//                emit(Resource.Error("Couldn't load data"))
-//                emit(Resource.Loading(false))
-//                return@flow
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                emit(Resource.Error("Couldn't load data"))
-//                emit(Resource.Loading(false))
-//                return@flow
-//            }
-//
-//            remoteTasks?.let { tasks ->
-//                val entities = tasks.map { it.toTaskEntity() }
-//                mainDatabase
-//                    .getTaskDao()
-//                    .upsertTaskList(entities)
-//
-//                emit(Resource.Success(entities.map { it.toTask() }))
-//                emit(Resource.Loading(false))
-//                return@flow
-//            }
-//        }
-//    }
-//
-//    override suspend fun getUserFriendsFromRemote(): Flow<Resource<List<Friend>>> {
-//
-//        return flow {
-//            emit(Resource.Loading(true))
-//
-//            val remoteFriends = try {
-//                mainApi.getGroupIdsForUser(
-//                    ServerQuery(
-//                        username = prefs.getString("username", null)!!,
-//                        token = prefs.getString("token", null)!!
-//                    )
-//                )?.data?.filterIsInstance<Friend>()
-//            } catch (e: IOException) {
-//                e.printStackTrace()
-//                emit(Resource.Error("Couldn't load data"))
-//                emit(Resource.Loading(false))
-//                return@flow
-//            } catch (e: HttpException) {
-//                e.printStackTrace()
-//                emit(Resource.Error("Couldn't load data"))
-//                emit(Resource.Loading(false))
-//                return@flow
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                emit(Resource.Error("Couldn't load data"))
-//                emit(Resource.Loading(false))
-//                return@flow
-//            }
-//
-//            remoteFriends?.let { users ->
-//                val entities = users.map { it.toFriendEntity() }
-//                mainDatabase
-//                    .getFriendDao()
-//                    .upsertFriendsList(entities)
-//                emit(Resource.Success(entities.map { it.toFriend() }))
-//                emit(Resource.Loading(false))
-//                return@flow
-//            }
-//        }
-//    }
 
     override suspend fun getUserGroupsFromLocal(): Flow<Resource<List<Group>>> {
         return flow {

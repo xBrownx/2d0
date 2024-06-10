@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import com.brownx.a2d0.core.presenter.nav.CoreNav
 import com.brownx.a2d0.ui.theme._2d0Theme
 import dagger.hilt.android.AndroidEntryPoint
 

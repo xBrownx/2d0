@@ -11,5 +11,9 @@ data class TodoState(
     val isLoading: Boolean = false,
 
     val taskSortType: TaskSortType = TaskSortType.DUE_TODAY,
-    val todoList: List<Task> = listOf(),
+
+    val todoAll: List<Task> = listOf(),
+    val todoToday: List<Task> = listOf(),
+    val todoAnytime: List<Task> = listOf(),
+    val todoUpcoming: List<Task> = listOf()
 )

@@ -9,14 +9,10 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import com.brownx.a2d0.calendar.presenter.CalendarScreen
-import com.brownx.a2d0.groups.presenter.groups.GroupsScreen
-import com.brownx.a2d0.profile.presenter.ProfileScreen
-import com.brownx.a2d0.settings.presenter.SettingsScreen
-import com.brownx.a2d0.todo.presenter.TodoScreen
-import com.brownx.a2d0.util.Screen
-import timber.log.Timber
+import com.brownx.a2d0.calendar.presenter.CoreCalendarScreen
+import com.brownx.a2d0.groups.presenter.CoreGroupsScreen
+import com.brownx.a2d0.main.util.HomeNavControllers
+import com.brownx.a2d0.todo.presenter.CoreTodoScreen
 
 /**
  * @author Andrew Brown
@@ -27,7 +23,8 @@ import timber.log.Timber
 fun CorePager(
     paddingValues: PaddingValues,
     pagerState: PagerState,
-    navController: NavHostController
+    navControllers: HomeNavControllers,
+    onCreateGroup: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -43,18 +40,14 @@ fun CorePager(
             ) { page ->
 
             when (page) {
-                0 -> CalendarScreen()
-                1 -> GroupsScreen(navController = navController)
-                2 -> TodoScreen()
-                3 -> ProfileScreen()
-                4 -> SettingsScreen() {
-                    Timber.d("Logging out")
-                    navController.popBackStack()
-                    navController.popBackStack()
-                    navController.navigate(
-                        Screen.Auth.route
-                    )
-                }
+                0 -> CoreCalendarScreen(navControllers.calendarNav)
+                1 -> CoreGroupsScreen(
+                    navController = navControllers.groupsNav,
+                    onCreateGroup = onCreateGroup
+                )
+                2 -> CoreTodoScreen(navControllers.todoNav)
+                3 -> {}
+                4 -> {}
             }
         }
     }

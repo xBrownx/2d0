@@ -41,7 +41,7 @@ class TodoViewModel @Inject constructor (
                 when(result) {
                     is Resource.Success -> {
                         _todoState.update {
-                            it.copy(todoList = result.data)
+                            it.copy(todoAll = result.data)
                         }
                     }
                     is Resource.Error -> { Timber.d("Resource.Error == ${result.error}") }
@@ -52,5 +52,4 @@ class TodoViewModel @Inject constructor (
             }
         }
     }
-
 }

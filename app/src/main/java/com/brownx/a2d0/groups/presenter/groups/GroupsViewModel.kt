@@ -50,7 +50,6 @@ class GroupsViewModel @Inject constructor(
                     is Resource.Error -> Timber.d("Resource.Error == ${result.error}")
                     is Resource.Loading -> Timber.d("Resource.Loading == ${result.isLoading}")
                     Resource.Idle -> Timber.d("Resource.Idle == ${result.message}")
-
                 }
             }
         }

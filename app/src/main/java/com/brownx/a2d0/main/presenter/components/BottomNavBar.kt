@@ -16,6 +16,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.scale
@@ -23,8 +24,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.brownx.a2d0.ui.theme.softBlue
-import com.brownx.a2d0.ui.theme.softOrange
 import com.brownx.a2d0.ui.theme.softPink
 import com.brownx.a2d0.ui.theme.softYellow
 import com.brownx.a2d0.util.Screen
@@ -40,11 +41,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun BottomNavBar(
     navController: NavHostController,
-    screenState: NavBackStackEntry?,
     scope: CoroutineScope,
     selectedTabIndex: State<Int>,
     pagerState: PagerState
 ) {
+
+    val screenState by navController.currentBackStackEntryAsState()
+
     NavigationBar(
         modifier = Modifier
             .fillMaxWidth()
@@ -60,13 +63,12 @@ fun BottomNavBar(
             },
         containerColor = softBlue,
     ) {
+        val isHome = screenState?.destination?.route == Screen.Home.Home.route
         BottomNavEnum.entries.forEachIndexed { index, currentTab ->
             NavigationBarItem(
-                selected =
-                selectedTabIndex.value == index && screenState?.destination?.route ==
-                        Screen.Home.route,
+                selected = selectedTabIndex.value == index && isHome,
                 onClick = {
-                    if(screenState?.destination?.route != Screen.Home.route) {
+                    if(!isHome) {
                         navController.navigate(Screen.Home.route)
                     }
                     scope.launch {
@@ -103,7 +105,7 @@ enum class BottomNavEnum(
     ),
     Todo(
         icon = Icons.AutoMirrored.Outlined.List,
-        label = Screen.Home.List.route,
+        label = Screen.Home.Todo.route,
     ),
     Profile(
         icon = Icons.Default.Person,

@@ -26,9 +26,8 @@ import com.brownx.a2d0.ui.theme.softGrey
 
 @Composable
 fun GroupScreen(
-    navController: NavHostController
-) {
 
+) {
     val groupViewModel = hiltViewModel<GroupViewModel>()
     val groupState by groupViewModel.groupState.collectAsState()
 
