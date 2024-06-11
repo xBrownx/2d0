@@ -10,27 +10,10 @@ import retrofit2.http.POST
  * created on 4/06/2024
  */
 
-
-
 interface MainApi {
 
     @POST("/get-user-data")
     suspend fun getUserData(
-        @Body query: ServerQuery
-    ) : ServerResponse?
-
-    @POST("/user-group-query")
-    suspend fun getGroupIdsForUser(
-        @Body query: ServerQuery
-    ) : ServerResponse?
-
-    @POST("/group-task-query")
-    suspend fun getTasksFromGroupIds(
-        @Body query: ServerQuery
-    ) : ServerResponse?
-
-    @POST("/user-friends-query")
-    suspend fun getFriendsForUser(
         @Body query: ServerQuery
     ) : ServerResponse?
 
@@ -44,6 +27,16 @@ interface MainApi {
         @Body query: ServerQuery
     ) : ServerResponse?
 
+    @POST("register-friend")
+    suspend fun registerFriend(
+        @Body query: ServerQuery
+    ) : ServerResponse?
 
-
+    companion object {
+        const val SERVER_IP = "http://192.168.0.2:5000/"
+        const val LOGIN_ROUTE = "/authenticate-login"
+        const val AUTHENTICATE_ROUTE = "/authenticate-token"
+        const val LOGOUT_ROUTE = "/logout-user"
+        const val REGISTER_ROUTE = "/register-user"
+    }
 }

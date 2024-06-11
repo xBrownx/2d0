@@ -12,11 +12,16 @@ data class CreateTaskState(
 
     val groupsList: List<Group> = listOf(),
     val groupName: String = "",
+
+    val createdTimeStamp: Long = 0L,
     val taskName: String = "",
-    val taskDesc: String = "",
-    val dueDate: String = "",
-    val dueTime: String = "",
+    val taskDescription: String = "",
+    val dueDateInMillis: Long = 0L,
+    val dueTimeInMillis: Long = 0L,
     val isRepeat: Boolean = false,
-    val repeatFreq: Int = 0,
-    val repeatUnit: String = ""
+    val repeatFrequency: Int = 0,
+    val repeatFrequencyUnit: String = "",
+
+    val dueDateString: String = "",
+    val dueTimeString: String = "",
 )

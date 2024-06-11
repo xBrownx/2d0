@@ -27,8 +27,8 @@ fun TextWithShadow(
     textColour: Color = Color.White,
     fontSize: TextUnit = 16.sp,
     modifier: Modifier,
-    xOffset: Float,
-    yOffset: Float
+    xOffset: Float = -1f,
+    yOffset: Float = 1f
 ) {
     Box {
         Text(

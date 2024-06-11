@@ -25,7 +25,6 @@ import com.brownx.a2d0.util.Screen
 fun GroupsNav(
     navController: NavHostController,
     paddingValues: PaddingValues,
-    onCreateGroup: () -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -48,9 +47,7 @@ fun GroupsNav(
                 )
             }
         ) {
-            GroupsScreen(
-                onCreateGroup = onCreateGroup
-            )
+            GroupsScreen()
         }
         composable(
             route = Screen.Home.Groups.Friends.route,

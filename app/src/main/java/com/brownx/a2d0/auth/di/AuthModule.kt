@@ -7,7 +7,7 @@ import com.brownx.a2d0.auth.domain.usecase.ValidateEmailUseCase
 import com.brownx.a2d0.auth.domain.usecase.ValidateMobileUseCase
 import com.brownx.a2d0.auth.domain.usecase.ValidatePasswordUseCase
 import com.brownx.a2d0.auth.domain.usecase.ValidateUsernameUseCase
-import com.brownx.a2d0.main.util.Const.SERVER_IP
+import com.brownx.a2d0.main.data.remote.MainApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +29,7 @@ class AuthModule {
     @Singleton
     fun provideAuthApi(): AuthApi {
         return Retrofit.Builder()
-            .baseUrl(SERVER_IP)
+            .baseUrl(MainApi.SERVER_IP)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(AuthApi::class.java)

@@ -8,6 +8,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.brownx.a2d0.ui.theme.softBlue
 
@@ -17,18 +18,19 @@ import com.brownx.a2d0.ui.theme.softBlue
  */
 @Composable
 fun CustomTextField(
+    modifier: Modifier = Modifier,
     value: String,
     label: String,
     onValueChange: (String) -> Unit
 ) {
     TextField(
-        modifier = Modifier
+        modifier = modifier
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth(),
         value = value,
         onValueChange = onValueChange,
         label = {
-            Text(label)
+            Text(text = label,)
         },
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = softBlue,

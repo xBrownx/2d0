@@ -48,52 +48,9 @@ fun HomeNav(
         ) {
             HomeScreen(
                 coreNavController = navController,
-                onShowCreateTask = {
-                    navController.navigate(Screen.Home.CreateTask.route)
-                },
-                onCreateGroup = {
-                    navController.navigate(Screen.Home.CreateGroup.route)
-                },
             )
         }
-        composable(
-            route = Screen.Home.CreateGroup.route,
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Up
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Down
-                )
-            }
-        ) {
-            CreateGroupDialog(
-                onExit = { navController.navigate(Screen.Home.Home.route) }
-            )
-        }
-        composable(
-            route = Screen.Home.CreateTask.route,
-            enterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Up
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(durationMillis = 300),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Down
-                )
-            }
-        ) {
-            CreateTaskDialog(
-                onExit = { navController.navigate(Screen.Home.Home.route) }
-            )
-        }
+
 
     }
 }

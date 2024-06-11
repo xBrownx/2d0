@@ -24,7 +24,6 @@ fun CorePager(
     paddingValues: PaddingValues,
     pagerState: PagerState,
     navControllers: HomeNavControllers,
-    onCreateGroup: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -41,10 +40,7 @@ fun CorePager(
 
             when (page) {
                 0 -> CoreCalendarScreen(navControllers.calendarNav)
-                1 -> CoreGroupsScreen(
-                    navController = navControllers.groupsNav,
-                    onCreateGroup = onCreateGroup
-                )
+                1 -> CoreGroupsScreen(navControllers.groupsNav,)
                 2 -> CoreTodoScreen(navControllers.todoNav)
                 3 -> {}
                 4 -> {}

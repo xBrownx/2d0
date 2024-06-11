@@ -33,9 +33,7 @@ import timber.log.Timber
  */
 
 @Composable
-fun GroupsScreen(
-    onCreateGroup: () -> Unit
-) {
+fun GroupsScreen() {
     val groupsViewModel = hiltViewModel<GroupsViewModel>()
     val groupsState by groupsViewModel.groupsState.collectAsState()
 
@@ -58,7 +56,7 @@ fun GroupsScreen(
 
             item {
                 AddGroupButton {
-                    onCreateGroup()
+
                 }
             }
         }

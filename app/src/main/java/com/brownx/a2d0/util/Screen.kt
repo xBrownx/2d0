@@ -32,8 +32,6 @@ sealed class Screen(val route: String) {
         data object Settings : Screen("settings_core") {
             data object Settings : Screen("settings")
         }
-        data object CreateGroup : Screen("create_group")
-        data object CreateTask : Screen("create_task")
     }
 
     data object Auth : Screen("auth") {

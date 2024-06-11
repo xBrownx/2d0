@@ -4,28 +4,31 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavBackStackEntry
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.brownx.a2d0.R
 import com.brownx.a2d0.ui.theme.softBlue
+import com.brownx.a2d0.ui.theme.softGrey
+import com.brownx.a2d0.ui.theme.softOrange
 import com.brownx.a2d0.ui.theme.softPink
 import com.brownx.a2d0.ui.theme.softYellow
 import com.brownx.a2d0.util.Screen
@@ -62,13 +65,19 @@ fun BottomNavBar(
                 )
             },
         containerColor = softBlue,
+
     ) {
         val isHome = screenState?.destination?.route == Screen.Home.Home.route
         BottomNavEnum.entries.forEachIndexed { index, currentTab ->
             NavigationBarItem(
+                colors = NavigationBarItemDefaults.colors(
+                    indicatorColor = softYellow.copy(alpha = 1f),
+                    selectedIconColor = softBlue,
+                    unselectedIconColor = softPink
+                ),
                 selected = selectedTabIndex.value == index && isHome,
                 onClick = {
-                    if(!isHome) {
+                    if (!isHome) {
                         navController.navigate(Screen.Home.route)
                     }
                     scope.launch {
@@ -79,12 +88,22 @@ fun BottomNavBar(
                     }
                 },
                 icon = {
-                    Icon(
-                        modifier = Modifier.scale(1.5f),
-                        imageVector = currentTab.icon,
-                        contentDescription = currentTab.label,
-                        tint = softPink
-                    )
+                    if (currentTab.isResource) {
+                        Icon(
+                            modifier = Modifier
+                                .size((30+currentTab.scale).dp),
+                            painter = painterResource(id = currentTab.resource!!),
+                            contentDescription = currentTab.label,
+
+                        )
+                    } else {
+                        Icon(
+                            modifier = Modifier
+                                .size((30+currentTab.scale).dp),
+                            imageVector = currentTab.imageVector!!,
+                            contentDescription = currentTab.label,
+                        )
+                    }
                 }
             )
         }
@@ -92,27 +111,34 @@ fun BottomNavBar(
 }
 
 enum class BottomNavEnum(
-    val icon: ImageVector,
+    val isResource: Boolean = false,
+    val imageVector: ImageVector? = null,
+    val resource: Int? = null,
     val label: String,
+    val scale: Int = 4
 ) {
     Calendar(
-        icon = Icons.Default.DateRange,
+        imageVector = Icons.Default.DateRange,
         label = Screen.Home.Calendar.route,
     ),
     Groups(
-        icon = Icons.Rounded.AccountCircle,
+        isResource = true,
+        resource = R.drawable.groups,
         label = Screen.Home.Groups.route,
     ),
     Todo(
-        icon = Icons.AutoMirrored.Outlined.List,
+        imageVector = Icons.AutoMirrored.Outlined.List,
         label = Screen.Home.Todo.route,
+        scale = 10,
     ),
     Profile(
-        icon = Icons.Default.Person,
+        isResource = true,
+        resource = R.drawable.profile,
         label = Screen.Home.Profile.route,
+        scale = 0,
     ),
     Settings(
-        icon = Icons.Default.Settings,
+        imageVector = Icons.Default.Settings,
         label = Screen.Home.Settings.route,
     )
 }

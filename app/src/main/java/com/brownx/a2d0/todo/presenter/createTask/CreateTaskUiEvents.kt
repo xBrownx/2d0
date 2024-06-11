@@ -19,7 +19,12 @@ sealed class CreateTaskUiEvents {
     ) : CreateTaskUiEvents()
 
     data class OnDueDateChanged(
-        val dueDate: String
+        val dueDateMillis: Long
+    ) : CreateTaskUiEvents()
+
+    data class OnDueTimeChanged(
+        val hour: Int,
+        val minute: Int,
     ) : CreateTaskUiEvents()
 
     data object OnSaveTask : CreateTaskUiEvents()

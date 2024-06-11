@@ -25,7 +25,6 @@ import com.brownx.a2d0.util.Screen
 @Composable
 fun CoreGroupsScreen(
     navController: NavHostController,
-    onCreateGroup: () -> Unit
 ) {
     var tabIndex by remember { mutableIntStateOf(0) }
     Scaffold(
@@ -53,7 +52,6 @@ fun CoreGroupsScreen(
             GroupsNav(
                 navController = navController,
                 paddingValues = paddingValues,
-                onCreateGroup = onCreateGroup
             )
         }
     }

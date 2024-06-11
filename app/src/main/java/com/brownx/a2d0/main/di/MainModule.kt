@@ -47,7 +47,7 @@ object MainModule {
     @Singleton
     fun provideMainApi(): MainApi {
         return Retrofit.Builder()
-            .baseUrl(Const.SERVER_IP)
+            .baseUrl(MainApi.SERVER_IP)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(MainApi::class.java)
