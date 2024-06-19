@@ -8,6 +8,7 @@ import com.brownx.a2d0.auth.data.remote.AuthApi
 import com.brownx.a2d0.auth.data.remote.dto.AuthRequest
 import com.brownx.a2d0.auth.domain.repository.AuthRepository
 import com.brownx.a2d0.auth.util.AuthResult
+import com.brownx.a2d0.main.data.remote.dto.ServerQuery
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val authApi: AuthApi,
     private val prefs: SharedPreferences,
-    private val application: Application
+    private val application: Application,
+
 ) : AuthRepository {
     override suspend fun register(
         username: String,
@@ -35,20 +37,22 @@ class AuthRepositoryImpl @Inject constructor(
             )
 
             val response = authApi.register(
-                AuthRequest(
+                ServerQuery(
                     username = username,
                     mobile = mobile,
                     deviceId = deviceId,
-                    password = password)
+                    password = password
+                )
             )
-            if(response.result) {
-                Timber.d("register successful with message: ${response.msg}")
-                login(username, password)
-            } else {
-                Timber.d("register failed with message: ${response.msg}")
-                AuthResult.Unauthorized()
-            }
-
+            response?.let {
+                if (it.status) {
+                    Timber.d("register successful with message: ${it.msg}")
+                    login(username, password)
+                } else {
+                    Timber.d("register failed with message: ${it.msg}")
+                    AuthResult.Unauthorized()
+                }
+            } ?: AuthResult.Unauthorized()
 
         } catch (e: HttpException) {
             e.printStackTrace()
@@ -77,26 +81,27 @@ class AuthRepositoryImpl @Inject constructor(
             )
 
             val response = authApi.login(
-                authRequest = AuthRequest(
+                request = ServerQuery(
                     username = username,
                     deviceId = deviceId,
                     password = password
                 )
             )
-            Timber.d("login token = ${response.token}")
 
-            if(response.result) {
-                Timber.d("login successful with message: ${response.msg}")
-                prefs.edit().putString("username", response.username).apply()
-                prefs.edit().putString("token", response.token).apply()
-                prefs.edit().putString("device_id", deviceId).apply()
-                AuthResult.Authorized()
-            } else {
-                Timber.d("login failed with message: ${response.msg}")
-                Timber.d("username: ${response.username}")
-                Timber.d("token: ${response.token}")
-                AuthResult.Unauthorized()
-            }
+            response?.let {
+                if (it.status) {
+                    Timber.d("login successful with message: ${it.msg}")
+                    prefs.edit().putString("username", it.username).apply()
+                    prefs.edit().putString("token", it.token).apply()
+                    prefs.edit().putString("device_id", deviceId).apply()
+                    AuthResult.Authorized()
+                } else {
+                    Timber.d("login failed with message: ${it.msg}")
+                    Timber.d("username: ${it.username}")
+                    Timber.d("token: ${it.token}")
+                    AuthResult.Unauthorized()
+                }
+            } ?: AuthResult.Unauthorized()
 
         } catch (e: HttpException) {
             e.printStackTrace()
@@ -131,29 +136,31 @@ class AuthRepositoryImpl @Inject constructor(
 
 
             val response = authApi.authenticate(
-                authRequest = AuthRequest(
+                request = ServerQuery(
                     username = username,
                     deviceId = deviceId,
                     token = token
                 )
             )
-            if(response.result) {
-                Timber.d("auth successful with message: ${response.msg}")
-                AuthResult.Authorized()
-            } else {
-                Timber.d("auth failed with message: ${response.msg}")
-                AuthResult.Unauthorized()
-            }
+            response?.let {
+                if (it.status) {
+                    Timber.d("auth successful with message: ${it.msg}")
+                    AuthResult.Authorized()
+                } else {
+                    Timber.d("auth failed with message: ${it.msg}")
+                    AuthResult.Unauthorized()
+                }
+            } ?: AuthResult.Unauthorized()
         } catch (e: HttpException) {
             e.printStackTrace()
             if (e.code() == 401) {
-                AuthResult.Authorized()
+                AuthResult.Unauthorized()
             } else {
-                AuthResult.Authorized()
+                AuthResult.Unauthorized()
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            AuthResult.Authorized()
+            AuthResult.Unauthorized()
         }
     }
 
@@ -165,7 +172,7 @@ class AuthRepositoryImpl @Inject constructor(
 
         try {
             authApi.logout(
-                authRequest = AuthRequest(
+                request = ServerQuery(
                     username = username,
                     deviceId = deviceId,
                     token = token

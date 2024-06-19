@@ -1,6 +1,7 @@
 package com.brownx.a2d0.todo.presenter.createTask
 
 import com.brownx.a2d0.main.domain.model.Group
+import com.brownx.a2d0.main.domain.model.Task
 
 
 /**
@@ -13,7 +14,6 @@ data class CreateTaskState(
     val groupsList: List<Group> = listOf(),
     val groupName: String = "",
 
-    val createdTimeStamp: Long = 0L,
     val taskName: String = "",
     val taskDescription: String = "",
     val dueDateInMillis: Long = 0L,
@@ -25,3 +25,16 @@ data class CreateTaskState(
     val dueDateString: String = "",
     val dueTimeString: String = "",
 )
+
+fun CreateTaskState.toTask(): Task {
+    return Task(
+        groupId = groupName,
+        taskName = taskName,
+        taskDescription = taskDescription,
+        dueDate = dueDateInMillis,
+        isRepeat = isRepeat,
+        repeatFrequency = repeatFrequency,
+        repeatFrequencyUnit = repeatFrequencyUnit,
+        isComplete = false,
+    )
+}

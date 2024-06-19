@@ -32,5 +32,6 @@ interface GroupDAO {
     @Delete
     suspend fun deleteGroup(groupEntity: GroupEntity)
 
-
+    @Query("DELETE FROM group_table")
+    suspend fun deleteAllGroupItems()
 }

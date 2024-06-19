@@ -30,4 +30,7 @@ interface FriendDAO {
 
     @Delete
     suspend fun deleteUser(friendEntity: FriendEntity)
+
+    @Query("DELETE FROM friend_table")
+    suspend fun deleteAllFriendItems()
 }

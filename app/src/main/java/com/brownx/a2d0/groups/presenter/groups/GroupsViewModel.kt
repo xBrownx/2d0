@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.brownx.a2d0.main.domain.repository.MainRepository
 import com.brownx.a2d0.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -27,7 +29,7 @@ class GroupsViewModel @Inject constructor(
     val groupsState = _groupsState.asStateFlow()
 
     init {
-        getGroupListFromLocal()
+        getGroupListFromRemote()
     }
 
     fun onEvent(uiEvent: GroupsUiEvents) {
@@ -39,8 +41,11 @@ class GroupsViewModel @Inject constructor(
     }
 
     private fun getGroupListFromLocal() {
-        viewModelScope.launch {
-            mainRepository.getUserGroupsFromLocal().collectLatest { result ->
+        viewModelScope.launch(context = Dispatchers.IO) {
+            mainRepository
+                .getUserGroupsFromLocal()
+                .distinctUntilChanged()
+                .collect { result ->
                 when(result) {
                     is Resource.Success -> {
                         _groupsState.update {
@@ -56,7 +61,20 @@ class GroupsViewModel @Inject constructor(
     }
 
     private fun getGroupListFromRemote() {
-
+        Timber.d("Refreshing from main State")
+        viewModelScope.launch {
+            mainRepository.getUserDataFromRemote().collectLatest { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        getGroupListFromLocal()
+                        Timber.d("MISSION SUCCESS")
+                    }
+                    else -> {
+                        Timber.d("MISSION FAILED")
+                    }
+                }
+            }
+        }
     }
 
 

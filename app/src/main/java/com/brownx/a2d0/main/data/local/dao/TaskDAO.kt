@@ -31,9 +31,10 @@ interface TaskDAO {
     @Delete
     suspend fun deleteTask(taskEntity: TaskEntity)
 
-
-
     @Query("SELECT * FROM task_table WHERE groupId = :groupId ORDER BY dueDate DESC")
     fun getTaskSortedByGroup(groupId: String): LiveData<List<TaskEntity>>
+
+    @Query("DELETE FROM task_table")
+    suspend fun deleteAllTaskItems()
 
 }

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
@@ -198,6 +199,15 @@ fun DialogContent(
             createTaskViewModel = createTaskViewModel,
             createTaskState = createTaskState
         )
+        Button(
+            onClick = { 
+                createTaskViewModel.onEvent(
+                    CreateTaskUiEvents.OnSaveTask
+                )
+            }
+        ) {
+            Text(text = "SUBMIT")
+        }
 
     }
 }

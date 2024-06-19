@@ -106,8 +106,8 @@ class CreateTaskViewModel @Inject constructor(
                     is Resource.Success -> {
                         _createTaskState.update {
                             it.copy(
-                                groupsList = result.data,
-                                groupName = result.data[0].groupName.uppercase()
+                                //groupsList = result.data,
+                                //groupName = result.data[0].groupName.uppercase()
                             )
                         }
                     }
@@ -120,6 +120,19 @@ class CreateTaskViewModel @Inject constructor(
     }
 
     private fun saveTaskToRemote() {
-
+        viewModelScope.launch {
+            mainRepository.upsertTaskItemToRemote(
+                _createTaskState.value.toTask()
+            ).collectLatest { result ->
+                when(result) {
+                    is Resource.Success -> {
+                        Timber.d("Resource.Success == ${result.message}")
+                    }
+                    is Resource.Error -> Timber.d("Resource.Error == ${result.error}")
+                    is Resource.Loading -> Timber.d("Resource.Loading == ${result.isLoading}")
+                    Resource.Idle -> Timber.d("Resource.Idle == ${result.message}")
+                }
+            }
+        }
     }
 }

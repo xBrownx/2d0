@@ -15,7 +15,6 @@ class TaskStateToEntityUseCase @Inject constructor(
 
     operator fun invoke(taskState: CreateTaskState): TaskEntity {
         return TaskEntity(
-            createdTimeStamp = taskState.createdTimeStamp,
             taskName = taskState.taskName,
             taskDescription = taskState.taskDescription,
             dueDate = taskState.dueDateInMillis,
@@ -25,5 +24,4 @@ class TaskStateToEntityUseCase @Inject constructor(
             assignedBy = prefs.getString("username", null)!!
         )
     }
-
 }

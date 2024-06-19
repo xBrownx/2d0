@@ -14,6 +14,8 @@ import com.brownx.a2d0.main.data.remote.dto.ServerQuery
 import com.brownx.a2d0.main.domain.repository.MainRepository
 import com.brownx.a2d0.main.data.mappers.toTask
 import com.brownx.a2d0.main.data.mappers.toTaskEntity
+import com.brownx.a2d0.main.data.remote.dto.GroupDto
+import com.brownx.a2d0.main.data.remote.dto.ServerResponse
 import com.brownx.a2d0.main.domain.model.RemoteUserData
 import com.brownx.a2d0.main.domain.model.Task
 import com.brownx.a2d0.util.Resource
@@ -36,14 +38,15 @@ class MainRepositoryImpl @Inject constructor(
     private val mainDatabase: MainDatabase,
 ) : MainRepository {
 
-    override suspend fun getUserDataFromRemote(): Flow<Resource<RemoteUserData>> {
+    override suspend fun getUserDataFromRemote(): Flow<Resource<Unit>> {
+
         return flow {
             emit(Resource.Loading(true))
-
+            clearAllDatabases()
             val remoteData =
                 try {
                     mainApi.getUserData(
-                        ServerQuery(
+                        query = ServerQuery(
                             username = prefs.getString("username", null)!!,
                             token = prefs.getString("token", null)!!,
                             deviceId = prefs.getString("device_id", null)!!,
@@ -66,13 +69,18 @@ class MainRepositoryImpl @Inject constructor(
                     return@flow
                 }
             remoteData?.let { data ->
-
+                Timber.d("REMOTE DATA == $remoteData")
                 data.groups.let { groups ->
-                    mainDatabase.getGroupDao().upsertGroupList(
-                        groups.map { it.toGroupEntity() }
-                    )
+                    Timber.d("Loading groups $groups")
+                    mainDatabase
+                        .getGroupDao()
+                        .upsertGroupList(
+                            groups.map { it.toGroupEntity() }
+                        )
                 }
+
                 data.tasks.let { tasks ->
+                    Timber.d("Loading tasks $tasks")
                     mainDatabase.getTaskDao().upsertTaskList(
                         tasks.map { it.toTaskEntity() }
                     )
@@ -84,10 +92,13 @@ class MainRepositoryImpl @Inject constructor(
                 }
 
                 emit(Resource.Loading(false))
-                emit(Resource.Success(remoteData))
+                emit(Resource.Success(Unit))
                 return@flow
             }
+            emit(Resource.Loading(false))
+            emit(Resource.Error("Unknown error"))
         }
+
     }
 
     override suspend fun getUserGroupsFromLocal(): Flow<Resource<List<Group>>> {
@@ -135,15 +146,6 @@ class MainRepositoryImpl @Inject constructor(
         }
     }
 
-
-    override suspend fun upsertGroupsList(groupsList: List<Group>) {
-        mainDatabase
-            .getGroupDao()
-            .upsertGroupList(
-                groupsList.map { it.toGroupEntity() }
-            )
-    }
-
     override suspend fun upsertGroupItem(group: Group) {
         mainDatabase
             .getGroupDao()
@@ -168,25 +170,66 @@ class MainRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun upsertTaskItemToRemote(task: Task): Flow<Resource<RemoteUserData>> {
+        return flow {
+            emit(Resource.Loading(true))
 
-    override suspend fun upsertTasksList(tasksList: List<Task>) {
-        TODO("Not yet implemented")
-    }
+            val remoteData = try {
+                mainApi.registerTask(
+                    query = ServerQuery(
+                        username = prefs.getString("username", null)!!,
+                        token = prefs.getString("token", null)!!,
+                        deviceId = prefs.getString("device_id", null)!!,
+                        task = task,
+                    )
+                )?.data
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't load data"))
+                emit(Resource.Loading(false))
+                return@flow
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't load data"))
+                emit(Resource.Loading(false))
+                return@flow
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't load data"))
+                emit(Resource.Loading(false))
+                return@flow
+            }
 
-    override suspend fun upsertFriendsList(friendsList: List<Friend>) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun upsertGroup(group: Group) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun upsertTaskItem(task: Task) {
-        TODO("Not yet implemented")
+//            remoteData?.let { data ->
+//
+//                data.groups.let { groups ->
+//                    mainDatabase.getGroupDao().upsertGroupList(
+//                        groups.map { it.toGroupEntity() }
+//                    )
+//                }
+//                data.tasks.let { tasks ->
+//                    mainDatabase.getTaskDao().upsertTaskList(
+//                        tasks.map { it.toTaskEntity() }
+//                    )
+//                }
+//                data.friends.let { friends ->
+//                    mainDatabase.getFriendDao().upsertFriendsList(
+//                        friends.map { it.toFriendEntity() }
+//                    )
+//                }
+//
+//                emit(Resource.Loading(false))
+//                emit(Resource.Success(remoteData))
+//                return@flow
+//            }
+        }
     }
 
     override suspend fun clearAllDatabases() {
-        TODO("Not yet implemented")
+        Timber.d("clearingAllDatabases")
+        mainDatabase.getGroupDao().deleteAllGroupItems()
+        mainDatabase.getTaskDao().deleteAllTaskItems()
+        mainDatabase.getFriendDao().deleteAllFriendItems()
     }
 
 

@@ -12,8 +12,8 @@ import androidx.room.PrimaryKey
 data class GroupEntity(
 
     @PrimaryKey
-    var groupId: String = "",
-    var groupName: String = "",
-    var groupOwnerId: String = "",
-    var createdTimestamp: Long = 0L,
+    var groupId: String,
+    var groupName: String,
+    var groupOwnerId: String,
+    var createdTimestamp: Long,
 )
